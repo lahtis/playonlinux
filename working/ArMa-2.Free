@@ -1,0 +1,62 @@
+#!/bin/bash
+# Date : (2013-10-03)
+# Last revision : (2013-11-01 12:50)
+# Distribution used to test : Ubuntu 12.10
+# Nvidia 9800 GT, 325.15 test drivers
+# Author : lahtis
+# Licence : GPLv3
+# Installer for Arma 2 Free version
+# PlayOnLinux: 4.2.1
+# Flashes fixed with StrictDrawOrdering = enabled
+ 
+[ "$PLAYONLINUX" = "" ] && exit 0
+source "$PLAYONLINUX/lib/sources"
+
+TITLE="Arma 2 Free"
+PREFIX="Arma2Free"
+WORKING_WINE_VERSION="1.7.0"
+EDITOR="Bohemia Interactive"
+GAME_URL="http://www.arma2.com/free"
+AUTHOR="lahtis"
+
+#Initialization
+POL_GetSetupImages "http://files.playonlinux.com/resources/setups/$PREFIX/top.jpg" "http://files.playonlinux.com/resources/setups/$PREFIX/left.jpg" "$TITLE"
+
+POL_SetupWindow_Init
+#POL_SetupWindow_SetID 12345 ##TODO
+POL_Debug_Init
+
+# Presentation
+POL_SetupWindow_presentation "$TITLE" "$EDITOR" "$GAME_URL" "$AUTHOR" "$PREFIX"
+ 
+# Create Prefix
+POL_Wine_SelectPrefix "$PREFIX"
+POL_System_SetArch "x86"
+POL_Wine_PrefixCreate "$WORKING_WINE_VERSION"
+
+Set_OS "winxp"
+
+POL_SetupWindow_question "$(eval_gettext 'You want to open $TITLE download page in your browser?')" "$TITLE"
+    if [ "$APP_ANSWER" = "TRUE" ]
+    then
+        POL_Browser "http://www.arma2.com/free"
+    fi
+
+cd "$HOME"
+POL_SetupWindow_browse "$(eval_gettext 'Please select unzipped setup file to run. Do not run the game when installer is finished. You got a free activation key for installer in login https://free.arma2.com/activation address.')" "$TITLE"
+POL_Wine "$APP_ANSWER"
+POL_Wine_WaitExit "$TITLE"
+
+# Fix moire flashes in smoke and dirt
+POL_Wine_Direct3D "StrictDrawOrdering" "enabled"
+
+# Asking about memory size of graphic card
+POL_SetupWindow_VMS $GAME_VMS
+POL_Wine_reboot
+ 
+# Create Shortcuts
+POL_Shortcut 'arma2free.exe' "$TITLE"
+
+POL_SetupWindow_Close
+ 
+exit 0
