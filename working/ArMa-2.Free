@@ -37,10 +37,7 @@ POL_Wine_PrefixCreate "$WORKING_WINE_VERSION"
 Set_OS "winxp"
 
 POL_SetupWindow_question "$(eval_gettext 'You want to open $TITLE download page in your browser?')" "$TITLE"
-    if [ "$APP_ANSWER" = "TRUE" ]
-    then
-        POL_Browser "http://www.arma2.com/free"
-    fi
+    if [ "$APP_ANSWER" = "TRUE" ] && POL_Browser "http://www.arma2.com/free"
 
 cd "$HOME"
 POL_SetupWindow_browse "$(eval_gettext 'Please select unzipped setup file to run. Do not run the game when installer is finished. You got a free activation key for installer in login https://free.arma2.com/activation address.')" "$TITLE"
