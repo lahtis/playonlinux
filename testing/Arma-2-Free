@@ -55,7 +55,7 @@ POL_SetupWindow_VMS $GAME_VMS
 POL_Wine_reboot
  
 # Create Shortcuts
-POL_Shortcut 'arma2free.exe' "$TITLE.png"
+POL_Shortcut 'arma2free.exe' "$TITLE"
 
 POL_SetupWindow_Close
  
