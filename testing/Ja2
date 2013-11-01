@@ -1,0 +1,104 @@
+#!/bin/bash
+[ -z "$PLAYONLINUX" ] && exit 0
+source "$PLAYONLINUX/lib/sources"
+ 
+POL_SetupWindow_Init
+POL_SetupWindow_SetID 1249
+POL_Debug_Init
+
+GOGID="jagged_alliance_2"
+STEAM_ID="1620";
+PREFIX="JaggedAlliance2_testversions"
+WORKING_WINE_VERSION="1.3.25"
+ 
+TITLE="Jagged Alliance 2"
+EDITOR="Sir-Tech Software / Strategy First"            
+GAME_URL="http://www.jaggedalliance.com/"
+AUTHOR="lahtis"
+GAME_VMS="512"
+ 
+POL_GetSetupImages "http://files.playonlinux.com/resources/setups/$PREFIX/top.jpg" "http://files.playonlinux.com/resources/setups/$PREFIX/left.jpg" "$TITLE"
+  
+POL_SetupWindow_presentation "$TITLE" "$EDITOR" " $GAME_URL" "$AUTHOR" "$PREFIX"
+ 
+POL_SetupWindow_menu "What version do you have a install?" "Installers menu" "CD|Steam|GOG" "|"
+
+if [ "$APP_ANSWER" = "CD" ]
+then
+    POL_SetupWindow_message "Installer for CD version" "Installers menu"
+
+    # Create Prefix
+    POL_Wine_SelectPrefix "$PREFIX"
+    POL_Wine_PrefixCreate "$WORKING_WINE_VERSION"
+    Set_OS winxp
+
+    # Asking about memory size of graphic card
+    POL_SetupWindow_VMS $GAME_VMS
+
+    # Fix pulseaudio issue
+    which pulseaudio && Set_OS "winxp"
+
+    # Select virtual desktop mode on
+    Set_Desktop On 800 600
+ 
+    # Asking for CDROM and checking if it's correct one
+    POL_SetupWindow_message "$(eval_gettext 'Please insert the game media into your disk drive')" "$TITLE"
+    POL_SetupWindow_check_cdrom "install/SETUP.EXE"
+    POL_SetupWindow_cdrom
+
+    POL_Wine start /unix "$CDROM/install/SETUP.EXE" || POL_Debug_Fatal "$(eval_gettext 'Error while installing game.')"
+    POL_Wine_WaitExit "$TITLE"
+
+    POL_Shortcut "ja2.exe" "$SHORTCUT_NAME" "$SHORTCUT_NAME.png" "" "Game;StrategyGame;"
+    POL_Shortcut "ja2.exe -resversion ENGLISH -res 1024x768 -fullsceen" "$TITLE" "$TITLE.png"
+
+elif [ "$APP_ANSWER" = "Steam" ]
+then
+    POL_SetupWindow_message "Installer for STEAM version" "Installers menu"
+
+    # Installing Steam
+    POL_Call POL_Install_steam
+
+    # Mandatory pre-install fix for steam
+    POL_Call POL_Install_steam_flags "$STEAM_ID"
+ 
+    # Shortcut done before install for steam version
+    POL_Shortcut "steam.exe" "$TITLE" "$TITLE.png" "steam://rungameid/$STEAM_ID"
+    POL_Shortcut "steam.exe" "Steam ($TITLE)" "" ""
+
+    cd "$WINEPREFIX/drive_c/$PROGRAMFILES/Steam"
+    POL_Wine start /unix "steam.exe" steam://install/$STEAM_ID 
+    POL_Wine_WaitExit "$TITLE"
+
+
+elif [ "$APP_ANSWER" = "GOG" ]
+then
+    POL_SetupWindow_message "Installer for GOG version" "Installers menu"
+
+    POL_Call POL_GoG_setup "$GOGID" "bc51594c5f2b095f922dbe57725ae34a"
+ 
+    POL_Wine_SelectPrefix "$PREFIX"
+    POL_Wine_PrefixCreate "$WORKING_WINE_VERSION"
+ 
+    POL_Call POL_GoG_install
+ 
+ 
+    # GoG work!
+    Set_OS winxp
+ 
+    POL_SetupWindow_VMS "1"
+ 
+    # Doesn't hurt ;)
+    POL_Wine_reboot
+ 
+    POL_Shortcut "ja2.exe" "$TITLE" "$TITLE.png" "" "Game;StrategyGame;"
+    POL_Shortcut_QuietDebug "$TITLE"
+    POL_Shortcut_Document "$TITLE" "$WINEPREFIX/drive_c/$PROGRAMFILES/GOG.com/Jagged Alliance 2/manual.pdf"
+    # C:\Program Files\GOG.com\Jagged Alliance 2\readme.txt
+ 
+fi
+
+ 
+POL_SetupWindow_Close
+
+exit 0
