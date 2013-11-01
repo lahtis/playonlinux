@@ -1,0 +1,65 @@
+#!/bin/bash
+# Date : (2013-02-18)
+# Last revision : (2013-02-18)
+# Distribution used to test : Ubuntu 12.10 LTS
+# Author : lahtis
+# Licence : GPLv3
+# PlayOnLinux: 4.1.9
+ 
+[ -z "$PLAYONLINUX" = "" ] && exit 0
+source "$PLAYONLINUX/lib/sources"
+ 
+PREFIX="treed"
+WINEVERSION="1.5.17"
+TITLE="Tree[d]"
+EDITOR="Giles"
+GAME_URL="http://www.frecle.net"
+AUTHOR="lahtis"
+ 
+#Initialization
+POL_GetSetupImages "http://files.playonlinux.com/resources/setups/$PREFIX/top.jpg" "http://files.playonlinux.com/resources/setups/$PREFIX/left.jpg" "$TITLE"
+POL_SetupWindow_Init
+      
+POL_Debug_Init
+      
+# Presentation
+POL_SetupWindow_presentation "$TITLE" "$EDITOR" "$GAME_URL" "$AUTHOR" "$PREFIX"
+ 
+# Create Prefix
+POL_Wine_SelectPrefix "$PREFIX"
+POL_System_SetArch "x86"
+POL_Wine_PrefixCreate "$WINEVERSION" 
+POL_System_TmpCreate "Treed" 
+ 
+# Configuration
+Set_OS "winxp"
+ 
+# Select install method
+POL_SetupWindow_InstallMethod "LOCAL, DOWNLOAD"
+if [ "$INSTALL_METHOD" = "LOCAL" ]
+then
+    POL_SetupWindow_browse "Please select the installation file to run." "$TITLE installation"
+    POL_SetupWindow_wait "Installation in progress." "$TITLE installation"
+    POL_Wine start /unix "$APP_ANSWER"
+    POL_Wine_WaitExit "$TITLE"
+ 
+ 
+elif [ "$INSTALL_METHOD" = "DOWNLOAD" ]
+then
+    cd "$POL_System_TmpDir"
+    POL_Download "http://www.frecle.net/treed/tree[d]-setup310.exe"
+    POL_SetupWindow_wait "Installation in progress." "$TITLE installation"
+    POL_Wine start /unix "tree[d]-setup310.exe"
+    POL_Wine_WaitExit "$TITLE"
+fi
+POL_System_TmpDelete
+           
+ 
+# Create Shortcuts
+POL_Shortcut 'tree\[d\].exe' "$TITLE"
+ 
+POL_SetupWindow_message "$(eval_gettext '$TITLE has been successfully installed.')" "$TITLE"
+          
+POL_SetupWindow_Close
+ 
+exit 0
