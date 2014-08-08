@@ -1,0 +1,98 @@
+#!/bin/bash
+# Date : (2014-08-08 19:33)
+# Last revision : (2014-08-08 21:56)
+# Wine version used : 1.7.22 (PlayOnLinux) 
+# Distribution used to test : Ubuntu 12.04 x64
+# Author : lahtis
+# Licence : Retail
+ 
+[ "$PLAYONLINUX" = "" ] && exit 0 
+source "$PLAYONLINUX/lib/sources"
+ 
+TITLE="Spintires"
+PREFIX="Spintires"
+EDITOR="Oovee"
+GAME_URL="http://www.spintires.com"
+AUTHOR="lahtis"
+WORKING_WINE_VERSION="1.7.22"
+GAME_VMS="1024"
+STEAM_ID="263280"
+ 
+# Starting the script
+POL_GetSetupImages "http://files.playonlinux.com/resources/setups/$PREFIX/top.jpg" "http://files.playonlinux.com/resources/setups/$PREFIX/left.jpg" "$TITLE"
+POL_SetupWindow_Init
+ 
+# Starting debugging API
+POL_Debug_Init
+
+# Presentation
+POL_SetupWindow_presentation "$TITLE" "$EDITOR" "$GAME_URL" "$AUTHOR" "$PREFIX"
+
+# Check Kernel ptrace
+if [ -e "/proc/sys/kernel/yama/ptrace_scope" ]; then
+        PTRACE_CHECK=`cat /proc/sys/kernel/yama/ptrace_scope`
+        if [ "$PTRACE_CHECK" != 0 ]; then
+                POL_Debug_message "$(eval_gettext 'The game will fail to launch until you set /proc/sys/kernel/yama/ptrace_scope to 0')" "$TITLE"
+        fi
+fi
+ 
+# Setting prefix path
+POL_Wine_SelectPrefix "$PREFIX"
+ 
+# Downloading wine if necessary and creating prefix
+POL_System_SetArch "x86"
+POL_Wine_PrefixCreate "$WORKING_WINE_VERSION"
+
+# Fix pulseaudio issue
+which pulseaudio && Set_OS "winxp"
+ 
+# Asking about memory size of graphic card
+POL_SetupWindow_VMS $GAME_VMS
+
+# Downloading and install directx9
+POL_Call POL_Install_directx9 
+
+# Downloading and install vcrun2010
+POL_Call POL_Install_vcrun2010 # Fix game issue
+
+# Downloading and install quartz
+POL_Call POL_Install_quartz # Fix game issue
+ 
+# Choose between DOWNLOAD for demo version or Digital Download version in Steam
+POL_SetupWindow_InstallMethod "DOWNLOAD,STEAM"
+
+# This DOWNLOADER install only Free beta version for testing purpose 
+if [ "$INSTALL_METHOD" == "DOWNLOAD" ]; then
+
+POL_System_TmpCreate "$PREFIX"
+
+# Download and install the game
+cd "$POL_System_TmpDir"
+POL_Download "http://oovee.chicsystems.net/SpinTiresInstall_060613.zip"
+unzip "SpinTiresInstall_060613.zip"
+POL_SetupWindow_wait "Unzip in progress." "Unzip progress"
+POL_Wine start /unix "$POL_System_TmpDir/SpinTiresInstall_June060613.msi"
+POL_Wine_WaitExit "$TITLE"
+ 
+POL_System_TmpDelete
+ 
+POL_Shortcut 'SpinTires.exe' "SpinTires - demo"
+ 
+POL_SetupWindow_Close
+
+else
+# Installing mandatory dependencies
+POL_Call POL_Install_steam
+
+# Mandatory pre-install fix for steam
+POL_Call POL_Install_steam_flags "$STEAM_ID"
+ 
+# Shortcut done before install for steam version
+POL_Shortcut "steam.exe" "$TITLE" "$TITLE.png" "steam://rungameid/$STEAM_ID" "Game;"
+
+cd "$WINEPREFIX/drive_c/$PROGRAMFILES/Steam"
+        POL_Wine start /unix "steam.exe" steam://install/$STEAM_ID
+
+POL_SetupWindow_Close
+fi 
+exit 0
