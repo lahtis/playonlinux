@@ -21,7 +21,7 @@ POL_GetSetupImages "http://files.playonlinux.com/resources/setups/$PREFIX/top.jp
   
 POL_SetupWindow_presentation "$TITLE" "$EDITOR" " $GAME_URL" "$AUTHOR" "$PREFIX"
  
-POL_SetupWindow_menu "What version do you have a install?" "Installers menu" "CD|Steam|GOG" "|"
+POL_SetupWindow_menu "What version do you have a install?" "Installers menu" "CD|STEAM|GOG" "|"
 
 if [ "$APP_ANSWER" = "CD" ]
 then
@@ -52,7 +52,7 @@ then
     POL_Shortcut "ja2.exe" "$SHORTCUT_NAME" "$SHORTCUT_NAME.png" "" "Game;StrategyGame;"
     POL_Shortcut "ja2.exe -resversion ENGLISH -res 1024x768 -fullsceen" "$TITLE" "$TITLE.png"
 
-elif [ "$APP_ANSWER" = "Steam" ]
+elif [ "$APP_ANSWER" = "STEAM" ]
 then
     POL_SetupWindow_message "Installer for STEAM version" "Installers menu"
 
