@@ -9,7 +9,7 @@ POL_Debug_Init
 GOGID="jagged_alliance_2"
 STEAM_ID="1620";
 PREFIX="JaggedAlliance2_testversions"
-WORKING_WINE_VERSION="1.3.25"
+WORKING_WINE_VERSION="1.7.24"
  
 TITLE="Jagged Alliance 2"
 EDITOR="Sir-Tech Software / Strategy First"            
