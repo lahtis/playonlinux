@@ -102,3 +102,13 @@ fi
 POL_SetupWindow_Close
 
 exit 0
+
+Hint!
+im getting game running with using nocd crack. (ja2.exe)  But when im closing game there are some errors.
+my wine cd drivers ini cd=D: 
+-> D: /media/valvoja/INSTALL_CD
+
+Running wine-1.7.24 ja2.exe (Working directory : /home/valvoja/.PlayOnLinux/wineprefix/JaggedAlliance2_testversions/drive_c/Program Files/TalonSoft/Ja2)
+fixme:win:EnumDisplayDevicesW ((null),0,0x33f628,0x00000000), stub!
+fixme:x11drv:X11DRV_desktop_SetCurrentMode Cannot change screen BPP from 32 to 16
+fixme:ddraw:ddraw_surface7_Flip Ignoring flags 0x1.
