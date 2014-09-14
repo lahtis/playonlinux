@@ -11,7 +11,7 @@ source "$PLAYONLINUX/lib/sources"
 TITLE="Kuvat Kirjaksi"
 PREFIX="kuvatkirjaksi"
 EDITOR="Grano Oy"
-GAME_URL="http://www.kuvatkirjaksi.fi/"
+GAME_URL="http://www.kuvatkirjaksi.fi"
 AUTHOR="lahtis"
 WORKING_WINE_VERSION="1.7.26"
 
@@ -46,7 +46,7 @@ which pulseaudio && Set_OS "winxp"
 # Asking about memory size of graphic card
 POL_SetupWindow_VMS $GAME_VMS
 
-# Install fonts
+# Install MS-fonts
 POL_Install_corefonts
 
 POL_System_TmpCreate "$PREFIX"
