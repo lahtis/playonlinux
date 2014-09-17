@@ -8,6 +8,8 @@
 # [SuperPlumus] (2013-12-08 19-04)
 #   Update gettext messages
 #   Clean code
+# [Lahtis] (2014-09-17 22-05)
+#   Frecle main site is down using my public dropbox account for download a file.
 
 [ -z "$PLAYONLINUX" ] && exit 0
 source "$PLAYONLINUX/lib/sources"
