@@ -1,0 +1,65 @@
+#!/bin/bash
+# Date : (2015-07-12 20-03)
+# Last revision : (2015-07-12 20-03)
+# Distribution used to test : Ubuntu 14.04
+# Author : lahtis
+# Licence : GPLv3
+# Small Wurm Clock destop installer application (WURM Online game)
+# PlayOnLinux: 4.2.8
+ 
+
+ 
+[ -z "$PLAYONLINUX" ] && exit 0
+source "$PLAYONLINUX/lib/sources"
+ 
+TITLE="Wurm Clock"
+PREFIX="WurmClock"
+WORKING_WINE_VERSION="1.7.32"
+EDITOR="Yaga, Hakim"
+GAME_URL="http://forum.wurmonline.com/index.php?/topic/61451-wurmclock-desktop-app-showing-current-wurm-time-and-date/"
+AUTHOR="lahtis"
+
+ 
+ 
+POL_GetSetupImages "http://files.playonlinux.com/resources/setups/$PREFIX/top.jpg" "http://files.playonlinux.com/resources/setups/$PREFIX/left.jpg" "$TITLE"
+POL_SetupWindow_Init
+POL_Debug_Init
+ 
+POL_SetupWindow_presentation "$TITLE" "$EDITOR" "$GAME_URL" "$AUTHOR" "$PREFIX"
+ 
+POL_Wine_SelectPrefix "$PREFIX"
+POL_System_SetArch "x86"
+POL_Wine_PrefixCreate "$WORKING_WINE_VERSION"
+ 
+POL_System_TmpCreate "$PREFIX"
+ 
+# Fix pulseaudio issue
+which pulseaudio && Set_OS "winxp"
+
+# open browser and download zip file.
+POL_Browser "http://forum.wurmonline.com/index.php?/topic/61451-wurmclock-desktop-app-showing-current-wurm-time-and-date/"
+
+# Create tmp directory for downloaded files
+POL_System_TmpCreate "$PREFIX"
+
+# select zip file
+POL_SetupWindow_browse "Please select the zip file." "$TITLE"
+
+# unzip zip file
+cd "$POL_System_TmpDir/$PREFIX" 
+unzip "$APP_ANSWER" 
+POL_SetupWindow_wait "$(eval_gettext 'Please wait while we extract $TITLE game data.')" "$TITLE"
+
+# create folder 
+mkdir "$WINEPREFIX/drive_c/Program Files/WurmClock/"
+
+# move correct folder
+mv "$POL_System_TmpDir/WurmClock.exe" "$WINEPREFIX/drive_c/Program Files/WurmClock/WurmClock.exe"
+mv "$POL_System_TmpDir/WurmClock.pdf" "$WINEPREFIX/drive_c/Program Files/WurmClock/WurmClock.pdf"
+
+POL_Shortcut 'WurmClock.exe' "$TITLE"
+
+POL_System_TmpDelete 
+POL_SetupWindow_Close
+ 
+exit 0
