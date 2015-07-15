@@ -12,8 +12,8 @@
 [ -z "$PLAYONLINUX" ] && exit 0
 source "$PLAYONLINUX/lib/sources"
  
-TITLE="Wurm Clock2"
-PREFIX="WurmClockTest"
+TITLE="Wurm Clock"
+PREFIX="WurmClock"
 WORKING_WINE_VERSION="1.7.32"
 EDITOR="Yaga, Hakim"
 GAME_URL="http://forum.wurmonline.com/index.php?/topic/61451-wurmclock-desktop-app-showing-current-wurm-time-and-date/"
