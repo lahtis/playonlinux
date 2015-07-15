@@ -12,15 +12,13 @@
 [ -z "$PLAYONLINUX" ] && exit 0
 source "$PLAYONLINUX/lib/sources"
  
-TITLE="Wurm Clock"
-PREFIX="WurmClock"
+TITLE="Wurm Clock2"
+PREFIX="WurmClockTest"
 WORKING_WINE_VERSION="1.7.32"
 EDITOR="Yaga, Hakim"
 GAME_URL="http://forum.wurmonline.com/index.php?/topic/61451-wurmclock-desktop-app-showing-current-wurm-time-and-date/"
 AUTHOR="lahtis"
 
- 
- 
 POL_GetSetupImages "http://files.playonlinux.com/resources/setups/$PREFIX/top.jpg" "http://files.playonlinux.com/resources/setups/$PREFIX/left.jpg" "$TITLE"
 POL_SetupWindow_Init
 POL_Debug_Init
@@ -31,33 +29,40 @@ POL_Wine_SelectPrefix "$PREFIX"
 POL_System_SetArch "x86"
 POL_Wine_PrefixCreate "$WORKING_WINE_VERSION"
 
+# create WurmClock folder in the $PROGRAMFILES
+mkdir "$WINEPREFIX/drive_c/$PROGRAMFILES/WurmClock/"
+
 # Create tmp directory for downloaded files 
 POL_System_TmpCreate "$PREFIX"
- 
+
 # Fix pulseaudio issue
 which pulseaudio && Set_OS "winxp"
 
-# open browser and download zip file.
-POL_Browser "http://forum.wurmonline.com/index.php?/topic/61451-wurmclock-desktop-app-showing-current-wurm-time-and-date/"
-
-# select zip file
-POL_SetupWindow_browse "Please select the downloaded zip file." "$TITLE"
+# Do you have downloaded the zip file?
+POL_SetupWindow_question "Do you have downloaded the zip file?" "Download?"
+if [ "$APP_ANSWER" = "FALSE" ]
+then
+	POL_Browser "https://www.dropbox.com/s/afpg9u7p4rcw0vc/WurmClock202.ZIP"
+	# POL_Browser "http://forum.wurmonline.com/index.php?/topic/61451-wurmclock-desktop-app-showing-current-wurm-time-and-date/"
+fi
 
 # unzip zip file, zip-file has not installer. Zip-file only carry the exe-file and pdf-guides.
-cd "$POL_System_TmpDir/$PREFIX" 
-unzip "$APP_ANSWER" 
-POL_SetupWindow_wait "$(eval_gettext 'Please wait while we extract $TITLE game data.')" "$TITLE"
+POL_SetupWindow_browse "Please select the downloaded zip file." $TITLE
+localInstallerPath=$APP_ANSWER
+POL_System_TmpCreate $PREFIX
+cd $POL_System_TmpDir
+cp localInstallerPath ./
+     
+POL_System_unzip "$APP_ANSWER" 
 
-# create folder 
-mkdir "$WINEPREFIX/drive_c/$PROGRAMFILES/WurmClock/"
+# move all files created folder, Files MOving not working.
+mv "$POL_System_TmpDir/$PREFIX/WurmClock.exe $WINEPREFIX/drive_c/$PROGRAMFILES/WurmClock/WurmClock.exe"
+mv "$POL_System_TmpDir/$PREFIX/WurmClock.pdf $WINEPREFIX/drive_c/$PROGRAMFILES/WurmClock/WurmClock.pdf"
 
-# move correct folder, 
-mv "$POL_System_TmpDir/WurmClock.exe" "$WINEPREFIX/drive_c/$PROGRAMFILES/WurmClock/WurmClock.exe"
-mv "$POL_System_TmpDir/WurmClock.pdf" "$WINEPREFIX/drive_c/$PROGRAMFILES/WurmClock/WurmClock.pdf"
+POL_Shortcut "$TITLE" "WurmClock.exe" 
+POL_Shortcut_Document "$TITLE - help" "WurmClock.pdf"
 
-POL_Shortcut 'WurmClock.exe' "$TITLE"
-
-POL_System_TmpDelete 
+#POL_System_TmpDelete 
 POL_SetupWindow_Close
  
 exit 0
