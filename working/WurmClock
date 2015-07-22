@@ -44,8 +44,6 @@ fi
 # unzip zip file, zip-file has not installer. Zip-file only carry the exe-file and pdf-guides.
 POL_SetupWindow_browse "Please select the downloaded zip file." $TITLE
 
-localInstallerPath=$APP_ANSWER
-cp localInstallerPath ./
 cd "$WINEPREFIX/drive_c/$PROGRAMFILES/WurmClock/"
 POL_System_unzip "$APP_ANSWER" 
 
