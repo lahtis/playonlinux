@@ -34,15 +34,15 @@ mkdir "$WINEPREFIX/drive_c/$PROGRAMFILES/WurmClock/"
 which pulseaudio && Set_OS "winxp"
 
 # Do you have downloaded the zip file?
-POL_SetupWindow_question "Do you have downloaded the zip file?" "Download?"
+POL_SetupWindow_question "$(eval_gettext 'Do you have downloaded the zip file?')" "$TITLE"
 if [ "$APP_ANSWER" = "FALSE" ]
 then
-	POL_Browser "https://www.dropbox.com/s/afpg9u7p4rcw0vc/WurmClock202.ZIP"
-	# POL_Browser "http://forum.wurmonline.com/index.php?/topic/61451-wurmclock-desktop-app-showing-current-wurm-time-and-date/"
+	#POL_Browser "https://www.dropbox.com/s/afpg9u7p4rcw0vc/WurmClock202.ZIP"
+	POL_Browser "http://forum.wurmonline.com/index.php?/topic/61451-wurmclock-desktop-app-showing-current-wurm-time-and-date/"
 fi
 
 # unzip zip file, zip-file has not installer. Zip-file only carry the exe-file and pdf-guides.
-POL_SetupWindow_browse "Please select the downloaded zip file." $TITLE
+POL_SetupWindow_message "$(eval_gettext 'Please select the downloaded zip file.')" "$TITLE"
 
 cd "$WINEPREFIX/drive_c/$PROGRAMFILES/WurmClock/"
 POL_System_unzip "$APP_ANSWER" 
