@@ -12,7 +12,7 @@ source "$PLAYONLINUX/lib/sources"
  
 TITLE="Wurm Clock"
 PREFIX="WurmClock"
-WORKING_WINE_VERSION="1.7.32" # testing 1.7.32, 1.7.47
+WORKING_WINE_VERSION="1.7.47"
 EDITOR="Yaga, Hakim"
 GAME_URL="http://forum.wurmonline.com/index.php?/topic/61451-wurmclock-desktop-app-showing-current-wurm-time-and-date/"
 AUTHOR="lahtis"
