@@ -1,20 +1,18 @@
 #!/bin/bash
-# Date : (2015-07-12 20-03)
-# Last revision : (2015-07-12 20-03)
+# Date : (2015-07-12 20:03)
+# Last revision : (2015-07-22 17:35)
 # Distribution used to test : Ubuntu 14.04
 # Author : lahtis
 # Licence : GPLv3
 # Small Wurm Clock destop installer application (WURM Online game)
 # PlayOnLinux: 4.2.8
- 
 
- 
 [ -z "$PLAYONLINUX" ] && exit 0
 source "$PLAYONLINUX/lib/sources"
  
 TITLE="Wurm Clock"
 PREFIX="WurmClock"
-WORKING_WINE_VERSION="1.7.32"
+WORKING_WINE_VERSION="1.7.32" # testing 1.7.32, 1.7.47
 EDITOR="Yaga, Hakim"
 GAME_URL="http://forum.wurmonline.com/index.php?/topic/61451-wurmclock-desktop-app-showing-current-wurm-time-and-date/"
 AUTHOR="lahtis"
@@ -32,9 +30,6 @@ POL_Wine_PrefixCreate "$WORKING_WINE_VERSION"
 # create WurmClock folder in the $PROGRAMFILES
 mkdir "$WINEPREFIX/drive_c/$PROGRAMFILES/WurmClock/"
 
-# Create tmp directory for downloaded files 
-POL_System_TmpCreate "$PREFIX"
-
 # Fix pulseaudio issue
 which pulseaudio && Set_OS "winxp"
 
@@ -48,21 +43,15 @@ fi
 
 # unzip zip file, zip-file has not installer. Zip-file only carry the exe-file and pdf-guides.
 POL_SetupWindow_browse "Please select the downloaded zip file." $TITLE
+
 localInstallerPath=$APP_ANSWER
-POL_System_TmpCreate $PREFIX
-cd $POL_System_TmpDir
 cp localInstallerPath ./
-     
+cd "$WINEPREFIX/drive_c/$PROGRAMFILES/WurmClock/"
 POL_System_unzip "$APP_ANSWER" 
 
-# move all files created folder, Files MOving not working.
-mv "$POL_System_TmpDir/$PREFIX/WurmClock.exe $WINEPREFIX/drive_c/$PROGRAMFILES/WurmClock/WurmClock.exe"
-mv "$POL_System_TmpDir/$PREFIX/WurmClock.pdf $WINEPREFIX/drive_c/$PROGRAMFILES/WurmClock/WurmClock.pdf"
+POL_Shortcut "WurmClock.exe" "$TITLE"
+POL_Shortcut_Document "Wurm Clock help" "WurmClock.pdf"
 
-POL_Shortcut "$TITLE" "WurmClock.exe" 
-POL_Shortcut_Document "$TITLE - help" "WurmClock.pdf"
-
-#POL_System_TmpDelete 
 POL_SetupWindow_Close
  
 exit 0
