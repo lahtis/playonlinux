@@ -42,7 +42,7 @@ then
 fi
 
 # unzip zip file, zip-file has not installer. Zip-file only carry the exe-file and pdf-guides.
-POL_SetupWindow_message "$(eval_gettext 'Please select the downloaded zip file.')" "$TITLE"
+POL_SetupWindow_browse "$(eval_gettext 'Please select the downloaded zip file.')" "$TITLE"
 
 cd "$WINEPREFIX/drive_c/$PROGRAMFILES/WurmClock/"
 POL_System_unzip "$APP_ANSWER" 
