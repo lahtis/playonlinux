@@ -6,7 +6,8 @@
 # Licence : GPLv3
 # PlayOnLinux: 4.2.8
 
-[ -z "$PLAYONLINUX" ] && exit 0 source "$PLAYONLINUX/lib/sources"
+[ -z "$PLAYONLINUX" ] && exit 0 
+source "$PLAYONLINUX/lib/sources"
  
 TITLE="ifolor Designer"
 PREFIX="ifolorDesigner"
