@@ -30,7 +30,7 @@ POLL_Call POL_Install_dotnet45
 POLL_Call POL_Install_gdiplus 
 
 # Fix pulseaudio issue
-Set_OS "winxp"
+which pulseaudio && Set_OS "winxp"
 
 # Do you have downloaded the program file?
 # Choose XP file.
