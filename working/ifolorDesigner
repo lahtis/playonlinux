@@ -6,8 +6,7 @@
 # Licence : GPLv3
 # PlayOnLinux: 4.2.8
 
-[ -z "$PLAYONLINUX" ] && exit 0
-source "$PLAYONLINUX/lib/sources"
+[ -z "$PLAYONLINUX" ] && exit 0 source "$PLAYONLINUX/lib/sources"
  
 TITLE="ifolor Designer"
 PREFIX="ifolorDesigner"
@@ -43,7 +42,7 @@ fi
 
 POL_SetupWindow_browse "$(eval_gettext 'Please select the downloaded program file.')" "$TITLE"
 
-cd "$HOME"
+cd "$HOME" ||exit
 POL_Wine "$APP_ANSWER"
 POL_Wine_WaitExit "$TITLE"
 
