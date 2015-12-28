@@ -1,0 +1,54 @@
+#!/bin/bash
+# Date : (2015-28-12 21:55)
+# Last revision : (2015-29-12 01:05)
+# Distribution used to test : Ubuntu 14.04
+# Author : lahtis
+# Licence : GPLv3
+# PlayOnLinux: 4.2.8
+
+[ -z "$PLAYONLINUX" ] && exit 0
+source "$PLAYONLINUX/lib/sources"
+ 
+TITLE="ifolor Designer"
+PREFIX="ifolorDesigner"
+WORKING_WINE_VERSION="1.7.47"
+EDITOR=""
+GAME_URL="http://www.ifolor.fi/en/ifolor_designer"
+AUTHOR="lahtis"
+
+POL_GetSetupImages "http://files.playonlinux.com/resources/setups/$PREFIX/top.jpg" "http://files.playonlinux.com/resources/setups/$PREFIX/left.jpg" "$TITLE"
+POL_SetupWindow_Init
+POL_Debug_Init
+ 
+POL_SetupWindow_presentation "$TITLE" "$EDITOR" "$GAME_URL" "$AUTHOR" "$PREFIX"
+ 
+POL_Wine_SelectPrefix "$PREFIX"
+POL_System_SetArch "x86"
+POL_Wine_PrefixCreate "$WORKING_WINE_VERSION"
+
+# Dependencies, overrides, and Windows version settings
+POLL_Call POL_Install_dotnet45
+POLL_Call POL_Install_gdiplus 
+
+# Fix pulseaudio issue
+Set_OS "winxp"
+
+# Do you have downloaded the program file?
+# Choose XP file.
+POL_SetupWindow_question "$(eval_gettext 'Do you have downloaded the program file?')" "$TITLE"
+if [ "$APP_ANSWER" = "FALSE" ]
+then
+	POL_Browser "http://www.ifolor.fi/en/ifolor_designer"
+fi
+
+POL_SetupWindow_browse "$(eval_gettext 'Please select the downloaded program file.')" "$TITLE"
+
+cd "$HOME"
+POL_Wine "$APP_ANSWER"
+POL_Wine_WaitExit "$TITLE"
+
+POL_Shortcut "Ifolor.ClientApplications.Starter.exe" "$TITLE"
+
+POL_SetupWindow_Close
+ 
+exit 0
