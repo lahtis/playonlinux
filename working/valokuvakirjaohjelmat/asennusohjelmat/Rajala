@@ -10,7 +10,7 @@
 source "$PLAYONLINUX/lib/sources"
  
 TITLE="Rajala Pro Shop"
-PREFIX="Rajala-kuvakirja"
+PREFIX="RajalaProShop"
 WORKING_WINE_VERSION="1.8-rc4"
 EDITOR=""
 GAME_URL="http://www.rajalacamera.fi/kuvapalvelut/kuvakirjat"
@@ -29,6 +29,17 @@ POL_Wine_PrefixCreate "$WORKING_WINE_VERSION"
 # Dependencies, overrides, and Windows version settings
 POLL_Call POL_Install_dotnet45
 POLL_Call POL_Install_gdiplus 
+
+POL_System_TmpCreate "$PREFIX"
+
+# Download and install missing icmui.dll and move C:\Windows\System32\icmui.dll location
+cd "$POL_System_TmpDir"
+POL_Download "http://www.search-dll.com/download/769.html"
+
+mv "769.html" "$WINEPREFIX/drive_c/windows/system32/icmui.dll"
+
+# Delete temp files
+POL_System_TmpDelete
 
 # Fix pulseaudio issue
 which pulseaudio && Set_OS "winxp"
