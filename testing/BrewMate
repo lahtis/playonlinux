@@ -1,10 +1,10 @@
 #!/bin/bash
 # Date : (2015-28-12 21:55)
-# Last revision : (2015-28-12 21:55)
+# Last revision : (2016-21-02 22:16)
 # Distribution used to test : Ubuntu 14.04
 # Author : lahtis
 # Licence : GPLv3
-# PlayOnLinux: 4.2.9
+# PlayOnLinux: 4.2.10
 # installer working, settings working but program crash
 
 [ -z "$PLAYONLINUX" ] && exit 0
@@ -14,7 +14,7 @@ TITLE="BrewMate"
 PREFIX="BrewMate"
 WORKING_WINE_VERSION="1.8-rc4-staging"
 EDITOR=""
-GAME_URL="http://www.brewmate.net/"
+GAME_URL="http://www.brewmate.net"
 AUTHOR="lahtis"
 
 POL_GetSetupImages "http://files.playonlinux.com/resources/setups/$PREFIX/top.jpg" "http://files.playonlinux.com/resources/setups/$PREFIX/left.jpg" "$TITLE"
@@ -27,7 +27,17 @@ POL_Wine_SelectPrefix "$PREFIX"
 POL_System_SetArch "x86"
 POL_Wine_PrefixCreate "$WORKING_WINE_VERSION"
 
-POL_CALL POL_Install_dotnet35
+# Check Kernel ptrace
+if [ -e "/proc/sys/kernel/yama/ptrace_scope" ]; then
+        PTRACE_CHECK=`cat /proc/sys/kernel/yama/ptrace_scope`
+        if [ "$PTRACE_CHECK" != 0 ]; then
+                POL_Debug_message "$(eval_gettext 'If the game crashes at startup, open a terminal and type:\necho 0|sudo tee /proc/sys/kernel/yama/ptrace_scope')" "$TITLE"
+        fi
+fi
+
+# Dependencies, overrides, and Windows version settings
+POLL_Call POL_Install_dotnet35
+POLL_Call POL_Install_gdiplus 
 
 # Fix pulseaudio issue
 which pulseaudio && Set_OS "winxp"
@@ -36,7 +46,7 @@ which pulseaudio && Set_OS "winxp"
 POL_SetupWindow_question "$(eval_gettext 'Do you have downloaded the program file?')" "$TITLE"
 if [ "$APP_ANSWER" = "FALSE" ]
 then
-	POL_Browser "http://www.brewmate.net/"
+	POL_Browser "http://www.softpedia.com/get/Others/Miscellaneous/BrewMate.shtml"
 fi
 
 cd "$HOME"
