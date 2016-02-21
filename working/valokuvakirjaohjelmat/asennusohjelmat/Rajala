@@ -11,7 +11,7 @@ source "$PLAYONLINUX/lib/sources"
  
 TITLE="Rajala Pro Shop"
 PREFIX="RajalaProShop"
-WORKING_WINE_VERSION="1.8-rc4"
+WORKING_WINE_VERSION="1.9.4"
 EDITOR=""
 GAME_URL="http://www.rajalacamera.fi/kuvapalvelut/kuvakirjat"
 AUTHOR="lahtis"
