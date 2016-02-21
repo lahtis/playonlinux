@@ -12,7 +12,7 @@ source "$PLAYONLINUX/lib/sources"
  
 TITLE="BrewMate"
 PREFIX="BrewMate"
-WORKING_WINE_VERSION="1.8-rc4-staging"
+WORKING_WINE_VERSION="1.9.4"
 EDITOR=""
 GAME_URL="http://www.brewmate.net"
 AUTHOR="lahtis"
