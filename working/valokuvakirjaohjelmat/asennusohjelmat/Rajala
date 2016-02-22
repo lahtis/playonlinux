@@ -52,9 +52,9 @@ then
 	POL_Browser "http://www.rajalacamera.fi/kuvapalvelut/kuvakirjat"
 fi
 
+cd "$HOME" ||exit
 POL_SetupWindow_browse "$(eval_gettext 'Please select the downloaded program file.')" "$TITLE"
 
-cd "$HOME" ||exit
 POL_Wine "$APP_ANSWER"
 POL_Wine_WaitExit "$TITLE"
 
