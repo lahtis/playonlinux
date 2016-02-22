@@ -1,0 +1,53 @@
+#!/bin/bash
+# Date : (2016-22-02 17:06)
+# Last revision : (2016-22-02 17:06)
+# Distribution used to test : Ubuntu 15.04
+# Author : lahtis
+# Licence : GPLv3
+# PlayOnLinux: 4.2.10
+
+[ -z "$PLAYONLINUX" ] && exit 0 
+source "$PLAYONLINUX/lib/sources"
+ 
+TITLE="Fujifilm Book Creator"
+PREFIX="FujifilmBookCreator"
+WORKING_WINE_VERSION="1.9.4"
+EDITOR="Grano Oy"
+GAME_URL="http://tilaus.kuvatehdas.fi/sections/misc/photobook/"
+AUTHOR="lahtis"
+
+POL_GetSetupImages "http://files.playonlinux.com/resources/setups/$PREFIX/top.jpg" "http://files.playonlinux.com/resources/setups/$PREFIX/left.jpg" "$TITLE"
+POL_SetupWindow_Init
+POL_Debug_Init
+ 
+POL_SetupWindow_presentation "$TITLE" "$EDITOR" "$GAME_URL" "$AUTHOR" "$PREFIX"
+ 
+POL_Wine_SelectPrefix "$PREFIX"
+POL_System_SetArch "x86"
+POL_Wine_PrefixCreate "$WORKING_WINE_VERSION"
+
+# Dependencies, overrides, and Windows version settings
+POLL_Call POL_Install_corefonts
+
+# Fix pulseaudio issue
+which pulseaudio && Set_OS "winxp"
+
+# Do you have downloaded the program file?
+# Choose XP file.
+POL_SetupWindow_question "$(eval_gettext 'Do you have downloaded the program file?')" "$TITLE"
+if [ "$APP_ANSWER" = "FALSE" ]
+then
+	POL_Browser "http://tilaus.kuvatehdas.fi/sections/misc/photobook/"
+fi
+
+cd "$HOME" ||exit
+POL_SetupWindow_browse "$(eval_gettext 'Please select the downloaded program file.')" "$TITLE"
+
+POL_Wine "$APP_ANSWER"
+POL_Wine_WaitExit "$TITLE"
+
+POL_Shortcut "FujifilmBookCreator.exe" "$TITLE"
+
+POL_SetupWindow_Close
+ 
+exit 0
