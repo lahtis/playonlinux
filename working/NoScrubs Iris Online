@@ -1,0 +1,56 @@
+#!/bin/bash
+# Date : (2016-03-15)
+# Last revision : (2016-03-30)
+# Wine version used : 1.9.4
+# Distribution used to test : Mac OS X El Capitan 10.11.1, Linux Mint Rosa 17.3, ubuntu mate 15.10
+# Author : Sedy, lahtis
+# License : GNU/GPL v3
+      
+[ -z "$PLAYONLINUX" ] && exit 0
+source "$PLAYONLINUX/lib/sources"
+      
+TITLE="NoScrubs Iris Online"
+PREFIX="Noscrubs"
+EDITOR="Noscrubs"
+GAME_URL="http://noscrubs.net"
+AUTHOR="Sedy, Lahtis"
+WORKING_WINE_VERSION="1.9.4"
+      
+# Starting the script
+POL_GetSetupImages "http://noscrubs.net/downloads/top.jpg" "http://noscrubs.net/downloads/left.jpg" "$TITLE"
+  
+POL_SetupWindow_Init
+POL_Debug_Init
+POL_SetupWindow_presentation "$TITLE" "$EDITOR" "$GAME_URL" "$AUTHOR" "$PREFIX"
+ 
+# Setting prefix path
+POL_Wine_SelectPrefix "$PREFIX"
+      
+# Downloading wine if necessary and creating prefix
+POL_System_SetArch "x86"
+POL_Wine_PrefixCreate "$WORKING_WINE_VERSION"
+ 
+# Fix pulseaudio issue
+which pulseaudio && Set_OS "winxp"
+ 
+# Do you have downloaded the program file?
+# Choose XP file.
+POL_SetupWindow_question "$(eval_gettext 'Do you have downloaded the program file?')" "$TITLE"
+if [ "$APP_ANSWER" = "FALSE" ]
+then
+        POL_Browser "http://noscrubs.net/iris/download-game"
+fi
+ 
+cd "$HOME" || exit
+POL_SetupWindow_browse "$(eval_gettext 'Please select the downloaded program file.')" "$TITLE"
+ 
+POL_Wine "$APP_ANSWER"
+POL_Wine_WaitExit "$TITLE"
+ 
+# Making shortcut
+POL_Shortcut "IrisLauncher.exe" "$TITLE" "$TITLE.png" "" "Game;"
+  
+POL_SetupWindow_message "$TITLE has been successfully installed" "$TITLE"
+POL_SetupWindow_Close
+  
+exit 0
