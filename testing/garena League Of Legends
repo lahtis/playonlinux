@@ -1,0 +1,60 @@
+#!/bin/bash
+# Date : (2016-04-21 22-13)
+# Last revision : (2016-04-21 22-13)
+# Distribution used to test : Ubuntu 15.10
+# Author : lahtis
+# Licence : GPLv3
+# Installer for garena League Of Legends
+# PlayOnLinux: 4.1.9, 4.2.1, 4.2.9, 4.2.10
+ 
+# CHANGELOG
+# [SuperPlumus] (2013-07-24 09-37)
+#   Update gettext messages
+#   Clean code
+#   Fix $PLAYONLINUX check presence
+ 
+[ -z "$PLAYONLINUX" ] && exit 0
+source "$PLAYONLINUX/lib/sources"
+ 
+TITLE="garena League Of Legends"
+PREFIX="garenaLOL"
+WORKING_WINE_VERSION="1.9.2-LeagueOfLegends5"
+EDITOR=""
+GAME_URL="https://lol.garena.com/home"
+AUTHOR="lahtis"
+  
+POL_GetSetupImages "http://files.playonlinux.com/resources/setups/$PREFIX/top.jpg" "http://files.playonlinux.com/resources/setups/$PREFIX/left.jpg" "$TITLE"
+POL_SetupWindow_Init
+POL_Debug_Init
+ 
+POL_SetupWindow_presentation "$TITLE" "$EDITOR" "$GAME_URL" "$AUTHOR" "$PREFIX"
+ 
+POL_Wine_SelectPrefix "$PREFIX"
+POL_System_SetArch "x86"
+POL_Wine_PrefixCreate "$WORKING_WINE_VERSION"
+
+POL_Call POL_Install_corefonts
+POL_Call POL_Install_vcrun2005
+POL_Call POL_Install_vcrun2008
+POL_Call POL_Install_d3dx9
+ 
+POL_System_TmpCreate "$PREFIX"
+ 
+# Fix pulseaudio issue
+which pulseaudio && Set_OS "win7"
+  
+cd "$POL_System_TmpDir"
+POL_Download "http://dl.garenanow.com/lol/lolsg/LoLInstaller.exe"
+
+POL_Wine_WaitBefore "$TITLE"
+POL_Wine "$POL_System_TmpDir/LoLInstaller.exe"
+POL_Wine_WaitExit "$TITLE"
+ 
+POL_System_TmpDelete
+
+# Plaese change shortcut to correct one.
+POL_Shortcut 'LOLClient.exe' "$TITLE"
+ 
+POL_SetupWindow_Close
+ 
+exit 0
