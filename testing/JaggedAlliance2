@@ -1,20 +1,21 @@
 #!/bin/bash
 # Date : (2013-06-25 20:43)
-# Last revision : (2013-06-25 20:43)
+# Last revision : (2016-04-235 02:16)
 # Wine version used : 1.3.25
 # Distribution used to test : Ubuntu 12.10, Nvidia Geforce 9800 GT 512MB using
 # nvidia-experimental-310 driver, Intel® Core™2 Duo CPU E4400 @ 2.00GHz×2, Memory 1,9 GiB
 # Author : lahtis <lahtis@gmail.com>
-# Script licence : GPL v.2
-# Program licence : Retail
-# Jagged Alliance 2 - retail and git installer
+# Script licence : GPLv2
+# Program version : Retail original CD version
+# Patch version : stracciatella v-0.12.352 GitHub patch. (https://github.com/ja2-stracciatella/ja2-stracciatella/releases)
+# Program licence : Retail CD version and stracciatella v-0.12.352 GitHub patch.
 # User is using this installer for coping the all data files in linux native version witch found Ubuntu repository ja2-Stracciatella or Bitbucket git ja2-Straccietella Continued version. This installer install Bitbucket Git ja2-Straccietella Continued patch.
 
 [ -z "$PLAYONLINUX" = "" ] && exit
 source "$PLAYONLINUX/lib/sources"
 
-PREFIX="JaggedAlliance2_git"
-WORKING_WINE_VERSION="1.3.25"
+PREFIX="ja2-stracciatella"
+WORKING_WINE_VERSION="1.9.4"
 TITLE="Jagged Alliance 2"
 EDITOR="Sir-Tech Software / Strategy First"           
 GAME_URL="http://www.jaggedalliance.com/"
@@ -65,14 +66,14 @@ then
     # Download latest ja2-Straccietella Continued files in GIT.
     # version is 0.12.175
 
-    POL_Download "http://ubuntuone.com/5pCsYVOXzXVIOqpPNHFJ3Z"
+    POL_Download "https://github.com/ja2-stracciatella/ja2-stracciatella/releases/download/v0.12.352/ja2-v0.12.352-win.zip"
     POL_SetupWindow_wait "Installation in progress." "$TITLE installation"
 
     # Move correct filename
-    mv "5pCsYVOXzXVIOqpPNHFJ3Z" "ja2-v0.12.175-win.zip"
+    # mv "5pCsYVOXzXVIOqpPNHFJ3Z" "ja2-v0.12.175-win.zip"
 
     # unzip file the correct filepath
-    unzip "ja2-v0.12.175-win.zip" "drive_c/Program Files/TalonSoft/Ja2/"
+    unzip "ja2-v0.12.352-win.zip" "drive_c/Program Files/TalonSoft/Ja2/"
 
 fi
 
@@ -81,7 +82,7 @@ POL_System_TmpDelete
 
 
 # Create shortcuts adn parameters (ja2.exe -resversion ENGLISH -res 1024x768)
-POL_Shortcut "ja2.exe" "$TITLE" "$TITLE.png"
+POL_Shortcut "ja2.exe -resversion ENGLISH -res 1024x768" "$TITLE" "$TITLE.png"
  
 POL_SetupWindow_message "$(eval_gettext '$TITLE has been successfully installed.')"
  
