@@ -15,7 +15,7 @@
 source "$PLAYONLINUX/lib/sources"
 
 PREFIX="ja2-stracciatella"
-WORKING_WINE_VERSION="1.9.4"
+WORKING_WINE_VERSION="1.3.25"
 TITLE="Jagged Alliance 2"
 EDITOR="Sir-Tech Software / Strategy First"           
 GAME_URL="http://www.jaggedalliance.com/"
