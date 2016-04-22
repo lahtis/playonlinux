@@ -81,8 +81,8 @@ POL_System_TmpDelete
 
 
 
-# Create shortcuts adn parameters (ja2.exe -resversion ENGLISH -res 1024x768)
-POL_Shortcut "ja2.exe -resversion ENGLISH -res 1024x768" "$TITLE" "$TITLE.png"
+# Create shortcuts and parameters (ja2.exe -resversion ENGLISH -res 1024x768)
+POL_Shortcut "ja2.exe" "$TITLE" "$TITLE.png"
  
 POL_SetupWindow_message "$(eval_gettext '$TITLE has been successfully installed.')"
  
