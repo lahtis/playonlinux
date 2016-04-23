@@ -7,9 +7,8 @@
 # Author : lahtis <lahtis@gmail.com>
 # Script licence : GPLv2
 # Program version : Retail original CD version
-# Patch version : stracciatella v-0.12.352 GitHub patch. (https://github.com/ja2-stracciatella/ja2-stracciatella/releases)
-# Program licence : Retail CD version and stracciatella v-0.12.352 GitHub patch.
-# User is using this installer for coping the all data files in linux native version witch found Ubuntu repository ja2-Stracciatella or Bitbucket git ja2-Straccietella Continued version. This installer install Bitbucket Git ja2-Straccietella Continued patch.
+# Ubuntu user using this installer for coping the all data files in linux native version 
+# witch found in GitHub page https://github.com/ja2-stracciatella/ja2-stracciatella/releases
 
 [ -z "$PLAYONLINUX" = "" ] && exit
 source "$PLAYONLINUX/lib/sources"
@@ -42,9 +41,6 @@ POL_SetupWindow_VMS $GAME_VMS
 # Fix pulseaudio issue
 which pulseaudio && Set_OS "winxp"
 
-# Select virtual desktop mode on
-# Set_Desktop On 800 600
- 
 # Asking for CDROM and checking if it's correct one
 POL_SetupWindow_message "$(eval_gettext 'Please insert the game media into your disk drive')" "$TITLE"
 POL_SetupWindow_check_cdrom "install/SETUP.EXE"
@@ -53,7 +49,6 @@ POL_SetupWindow_cdrom
 POL_Wine start /unix "$CDROM/install/SETUP.EXE" || POL_Debug_Fatal "$(eval_gettext 'Error while installing game.')"
 POL_Wine_WaitExit "$TITLE"
 
-# Create shortcuts and parameters (ja2.exe -resversion ENGLISH -res 1024x768)
 POL_Shortcut "ja2.exe" "$TITLE" "$TITLE.png"
  
 POL_SetupWindow_message "$(eval_gettext '$TITLE has been successfully installed.')"
