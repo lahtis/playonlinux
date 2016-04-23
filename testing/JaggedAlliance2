@@ -13,7 +13,7 @@
 [ -z "$PLAYONLINUX" = "" ] && exit
 source "$PLAYONLINUX/lib/sources"
 
-PREFIX="ja2-stracciatella"
+PREFIX="ja2-original"
 WORKING_WINE_VERSION="1.4.1"
 TITLE="Jagged Alliance 2"
 EDITOR="Sir-Tech Software / Strategy First"           
