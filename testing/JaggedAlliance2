@@ -43,7 +43,7 @@ POL_SetupWindow_VMS $GAME_VMS
 which pulseaudio && Set_OS "winxp"
 
 # Select virtual desktop mode on
-Set_Desktop On 800 600
+# Set_Desktop On 800 600
  
 # Asking for CDROM and checking if it's correct one
 POL_SetupWindow_message "$(eval_gettext 'Please insert the game media into your disk drive')" "$TITLE"
