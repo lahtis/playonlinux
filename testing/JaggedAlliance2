@@ -53,34 +53,6 @@ POL_SetupWindow_cdrom
 POL_Wine start /unix "$CDROM/install/SETUP.EXE" || POL_Debug_Fatal "$(eval_gettext 'Error while installing game.')"
 POL_Wine_WaitExit "$TITLE"
 
-# Create tmp directory for downloaded files
-POL_System_TmpCreate "$PREFIX"
-
-# Select install method
-POL_SetupWindow_InstallMethod "DOWNLOAD"
-if [ "$INSTALL_METHOD" == "DOWNLOAD" ]
-then
-
-    cd "$POL_System_TmpDir"
-
-    # Download latest ja2-Straccietella Continued files in GIT.
-    # version is 0.12.175
-
-    POL_Download "https://github.com/ja2-stracciatella/ja2-stracciatella/releases/download/v0.12.352/ja2-v0.12.352-win.zip"
-    POL_SetupWindow_wait "Installation in progress." "$TITLE installation"
-
-    # Move correct filename
-    # mv "5pCsYVOXzXVIOqpPNHFJ3Z" "ja2-v0.12.175-win.zip"
-
-    # unzip file the correct filepath
-    unzip "ja2-v0.12.352-win.zip" "drive_c/Program Files/TalonSoft/Ja2/"
-
-fi
-
-POL_System_TmpDelete
-
-
-
 # Create shortcuts and parameters (ja2.exe -resversion ENGLISH -res 1024x768)
 POL_Shortcut "ja2.exe" "$TITLE" "$TITLE.png"
  
