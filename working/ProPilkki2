@@ -1,32 +1,29 @@
 #!/bin/bash
-# Date : (2013-03-01 17-00)
-# Last revision : (2013-07-24 09-13)
-# Wine version used : 1.5.24
-# Distribution used to test : Ubuntu 12.10, Nvidia Geforce 9800 GT 512MB using
-# nvidia-experimental-310 driver, Intel® Core™2 Duo CPU E4400 @ 2.00GHz×2, Memory 1,9 GiB
-# Author : lahtis lahtis@gmail.com
-# Script licence : GPL v.2
-# Program licence : Retail
-# Freelancer installer and 1.1 offical patching.
+# Date : (2013-02-26 ??-??)
+# Last revision : (2013-07-24 09-37)
+# Distribution used to test : Ubuntu 12.10
+# Author : lahtis
+# Licence : GPLv3
+# Installer for Pro pilkki 2 v1.0.3
+# PlayOnLinux: 4.1.9, 4.2.1
  
 # CHANGELOG
-# [SuperPlumus] (2013-07-24 09-13)
+# [SuperPlumus] (2013-07-24 09-37)
 #   Update gettext messages
 #   Clean code
-#   Fix POL_Install_directplay call (missing POL_Call)
-#   Fix $PLAYONLINUX variable check presence
+#   Fix $PLAYONLINUX check presence
  
-[ -z "$PLAYONLINUX" ] && exit
+[ -z "$PLAYONLINUX" ] && exit 0
 source "$PLAYONLINUX/lib/sources"
  
-TITLE="Freelancer"
-PREFIX="Freelancer"
-WORKING_WINE_VERSION="1.5.24"
-SERVERTITLE="FreelanceServer"
-EDITOR="Microsoft game studios"
-GAME_URL="http://www.microsoft.com/games/freelancer/default.aspx"
+TITLE="Pro Pilkki 2"
+PREFIX="ProPilkki2"
+WORKING_WINE_VERSION="1.5.28"
+EDITOR="Team Procyon"
+GAME_URL="http://www.kalassa.net/propilkki2/index.php?eng=1"
 AUTHOR="lahtis"
 GAME_VMS="512"
+ 
  
 POL_GetSetupImages "http://files.playonlinux.com/resources/setups/$PREFIX/top.jpg" "http://files.playonlinux.com/resources/setups/$PREFIX/left.jpg" "$TITLE"
 POL_SetupWindow_Init
@@ -35,38 +32,30 @@ POL_Debug_Init
 POL_SetupWindow_presentation "$TITLE" "$EDITOR" "$GAME_URL" "$AUTHOR" "$PREFIX"
  
 POL_Wine_SelectPrefix "$PREFIX"
+POL_System_SetArch "x86"
 POL_Wine_PrefixCreate "$WORKING_WINE_VERSION"
  
 POL_System_TmpCreate "$PREFIX"
  
+# Fix pulseaudio issue
+which pulseaudio && Set_OS "winxp"
+ 
+# Asking about memory size of graphic card
 POL_SetupWindow_VMS $GAME_VMS
  
-Set_OS "winxp"
-Set_Desktop "On" "800" "600"
+cd "$POL_System_TmpDir"
+POL_Download "http://www.kalassa.net/propilkki2/download/PP2_download.php?id=0" "293f9e4e4ba0905f7f9526042510c2d1"
  
-POL_Call POL_Install_directplay
+# Move file to correct filename
+mv "PP2_download.php?id=0" "P2Installer_v1.0.3.exe"
  
-POL_SetupWindow_cdrom
-POL_SetupWindow_check_cdrom "00000000.016"
-POL_Wine start /unix "$CDROM/SETUP.EXE"
+POL_Wine_WaitBefore "$TITLE"
+POL_Wine "$POL_System_TmpDir/P2Installer_v1.0.3.exe"
 POL_Wine_WaitExit "$TITLE"
  
-POL_Shortcut "Freelancer.exe" "$TITLE" "$TITLE.png"
- 
-# Install patch 1.1
-cd "$POL_System_TmpDir"
-# POL_Download "http://download.microsoft.com/download/5/4/2/542a372f-d540-468d-a653-2cdced8d1d0d/flpatch.exe" "b2621b2a33c519d8b599cb3579be4c02"
-POL_Download "http://the-starport.net/freelancer/download/visit.php?cid=1&lid=2639"
- unzip flpatch.zip
-
-POL_Wine_WaitBefore "$TITLE - Patch 1.1"
-POL_Wine "$POL_System_TmpDir/flpatch.exe"
-POL_Wine_WaitExit "$TITLE - Patch 1.1"
- 
-POL_Shortcut "FLServer.exe" "$TITLE server" "$SERVERTITLE.png"
-# End install patch 1.1
- 
 POL_System_TmpDelete
+ 
+POL_Shortcut 'ProPilkki2.exe' "$TITLE"
  
 POL_SetupWindow_Close
  
