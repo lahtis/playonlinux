@@ -55,7 +55,10 @@ POL_Shortcut "Freelancer.exe" "$TITLE" "$TITLE.png"
  
 # Install patch 1.1
 cd "$POL_System_TmpDir"
-POL_Download "http://download.microsoft.com/download/5/4/2/542a372f-d540-468d-a653-2cdced8d1d0d/flpatch.exe" "b2621b2a33c519d8b599cb3579be4c02"
+# POL_Download "http://download.microsoft.com/download/5/4/2/542a372f-d540-468d-a653-2cdced8d1d0d/flpatch.exe" "b2621b2a33c519d8b599cb3579be4c02"
+POL_Download "http://the-starport.net/freelancer/download/visit.php?cid=1&lid=2639"
+unzip flpatch.zip
+
 POL_Wine_WaitBefore "$TITLE - Patch 1.1"
 POL_Wine "$POL_System_TmpDir/flpatch.exe"
 POL_Wine_WaitExit "$TITLE - Patch 1.1"
