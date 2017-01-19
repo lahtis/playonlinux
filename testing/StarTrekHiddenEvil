@@ -1,8 +1,8 @@
 #!/bin/bash
-# Date : (2013-06-25 20:43)
-# Last revision : (2017-01-19 07:06)
+# Date : (2017-01-19 15:27)
+# Last revision : (2017-01-19 15:27)
 # Wine version used : 2.0-rc5-staging
-# Distribution used to test : Ubuntu Mate 16.04
+# Distribution used to test : Ubuntu Mate 16.04 LTS, 32-bit
 # Author : lahtis <lahtis@gmail.com>
 # Script licence : GPLv2
 # Program version : Retail original CD version
