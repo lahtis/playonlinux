@@ -6,7 +6,7 @@
 # Author : lahtis <lahtis@gmail.com>
 # Script licence : GPLv2
 # Program version : Retail original CD version
-# Bug reports -> https://bugs.winehq.org/show_bug.cgi?id=21008
+# Bug reports -> 
 # Latest install script -> https://github.com/lahtis/playonlinux/blob/master/testing/Caesar3
 
 [ -z "$PLAYONLINUX" = "" ] && exit
