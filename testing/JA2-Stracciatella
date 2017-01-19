@@ -1,0 +1,79 @@
+#!/bin/bash
+# Date : (2013-06-25 20:43)
+# Last revision : (2017-01-19 07:06)
+# Wine version used : 2.0-rc5
+# Distribution used to test : Ubuntu Mate 16.04
+# Author : lahtis <lahtis@gmail.com>
+# Script licence : GPLv2
+# Program version : Retail original CD version
+# Script latest version found in GitHub page https://github.com/ja2-stracciatella/ja2-stracciatella/releases
+# Bug reports -> 
+
+[ -z "$PLAYONLINUX" = "" ] && exit
+source "$PLAYONLINUX/lib/sources"
+
+PREFIX="ja2-Stracciatella"
+WORKING_WINE_VERSION="2.0-rc5-staging"
+TITLE="Jagged Alliance 2 Stracciatella Open Source version"
+EDITOR="Sir-Tech Software / Strategy First"           
+GAME_URL="http://www.jaggedalliance.com/"
+AUTHOR="lahtis"
+
+# Initialization
+POL_GetSetupImages "http://files.playonlinux.com/resources/setups/$PREFIX/top.jpg" "http://files.playonlinux.com/resources/setups/$PREFIX/left.jpg" "$TITLE"
+
+POL_SetupWindow_Init
+POL_Debug_Init
+ 
+# Presentation
+POL_SetupWindow_presentation "$TITLE" "$EDITOR" "$GAME_URL" "$AUTHOR" "$PREFIX"
+
+# Create Prefix
+POL_Wine_SelectPrefix "$PREFIX"
+POL_Wine_PrefixCreate "$WORKING_WINE_VERSION"
+POL_System_TmpCreate "$PREFIX"
+
+# Fix pulseaudio issue
+which pulseaudio && Set_OS "winxp"
+
+# Asking for CDROM and checking if it's correct one
+POL_SetupWindow_message "$(eval_gettext 'Please insert the Install CD into your disk drive')" "$TITLE"
+POL_SetupWindow_check_cdrom "install/SETUP.EXE"
+POL_SetupWindow_cdrom
+
+POL_Wine start /unix "$CDROM/install/SETUP.EXE" || POL_Debug_Fatal "$(eval_gettext 'Error while installing game.')"
+POL_Wine_WaitExit "$TITLE"
+
+# Creating file structure
+# cd "$WINEPREFIX/drive_c/$PROGRAMFILES/" || POL_Debug_Fatal "$(eval_gettext 'Error in cd command')"
+# mkdir "TalonSoft" || POL_Debug_Fatal "$(eval_gettext 'Error mkdir command')"
+# cd "$WINEPREFIX/drive_c/$PROGRAMFILES/TalonSoft/" || POL_Debug_Fatal "$(eval_gettext 'Error in cd command')"
+# mkdir "Ja2" || POL_Debug_Fatal "$(eval_gettext 'Error mkdir command')"
+
+# Do you have downloaded the zip file?
+POL_SetupWindow_question "$(eval_gettext 'Do you have downloaded the zip file?')" "$TITLE"
+if [ "$APP_ANSWER" = "FALSE" ]
+then
+	POL_Browser "https://github.com/ja2-stracciatella/ja2-stracciatella/releases/"
+fi
+
+cd "$POL_System_TmpDir"
+
+# unzip zip file, zip-file has not installer. Zip-file only carry the exe-file and pdf-guides.
+POL_SetupWindow_browse "$(eval_gettext 'Please select the downloaded zip file.')" "$TITLE"
+
+POL_System_unzip "$APP_ANSWER" || POL_Debug_Fatal "$(eval_gettext 'Error unzip the $APP_ANSWER.')"
+
+cp -r "$POL_System_TmpDir/ja2-v0.15.1-win/" "$WINEPREFIX/drive_c/$PROGRAMFILES/TalonSoft/Ja2/"
+
+POL_Wine_WaitExit "$TITLE"
+
+# Create shortcuts and parameters (ja2.exe -resversion ENGLISH -res 1024x768)
+POL_Shortcut "ja2.exe -resversion ENGLISH -res 1024x768" "$TITLE - Stracciatella" "$TITLE.png"
+ 
+# Delete tmp directory
+POL_System_TmpDelete
+
+POL_SetupWindow_Close
+ 
+exit 0
