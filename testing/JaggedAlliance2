@@ -7,6 +7,7 @@
 # Script licence : GPLv2
 # Program version : Retail original CD version
 # Script latest version found in GitHub page https://github.com/ja2-stracciatella/ja2-stracciatella/releases
+# Bug reports -> https://bugs.winehq.org/show_bug.cgi?id=34836
 
 [ -z "$PLAYONLINUX" = "" ] && exit
 source "$PLAYONLINUX/lib/sources"
