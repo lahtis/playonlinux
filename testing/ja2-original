@@ -7,7 +7,7 @@
 # Script licence : GPLv2
 # Program version : Retail original CD version
 # Bug reports -> https://bugs.winehq.org/show_bug.cgi?id=34836
-# Latest install script -> 
+# Latest install script -> https://github.com/lahtis/playonlinux/blob/master/testing/ja2-original
 
 [ -z "$PLAYONLINUX" = "" ] && exit
 source "$PLAYONLINUX/lib/sources"
