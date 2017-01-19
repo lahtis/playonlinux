@@ -1,25 +1,23 @@
 #!/bin/bash
 # Date : (2013-06-25 20:43)
-# Last revision : (2016-04-235 02:16)
-# Wine version used : 1.4.1
-# Distribution used to test : Ubuntu 12.10, Nvidia Geforce 9800 GT 512MB using
-# nvidia-experimental-310 driver, Intel® Core™2 Duo CPU E4400 @ 2.00GHz×2, Memory 1,9 GiB
+# Last revision : (2017-01-19 07:06)
+# Wine version used : 2.0-rc5
+# Distribution used to test : Ubuntu Mate 16.04
 # Author : lahtis <lahtis@gmail.com>
 # Script licence : GPLv2
 # Program version : Retail original CD version
-# Ubuntu user using this installer for coping the all data files in linux native version 
-# witch found in GitHub page https://github.com/ja2-stracciatella/ja2-stracciatella/releases
+# Script latest version found in GitHub page https://github.com/ja2-stracciatella/ja2-stracciatella/releases
 
 [ -z "$PLAYONLINUX" = "" ] && exit
 source "$PLAYONLINUX/lib/sources"
 
 PREFIX="ja2-original"
-WORKING_WINE_VERSION="1.4.1"
+WORKING_WINE_VERSION="2.0-rc5-staging"
 TITLE="Jagged Alliance 2"
 EDITOR="Sir-Tech Software / Strategy First"           
 GAME_URL="http://www.jaggedalliance.com/"
 AUTHOR="lahtis"
-GAME_VMS="512"
+GAME_VMS="32"
 
 # Initialization
 POL_GetSetupImages "http://files.playonlinux.com/resources/setups/$PREFIX/top.jpg" "http://files.playonlinux.com/resources/setups/$PREFIX/left.jpg" "$TITLE"
@@ -48,6 +46,14 @@ POL_SetupWindow_cdrom
 
 POL_Wine start /unix "$CDROM/install/SETUP.EXE" || POL_Debug_Fatal "$(eval_gettext 'Error while installing game.')"
 POL_Wine_WaitExit "$TITLE"
+
+POL_Shortcut "ja2.exe" "$TITLE" "$TITLE.png"
+ 
+POL_SetupWindow_message "$(eval_gettext '$TITLE has been successfully installed.')"
+ 
+POL_SetupWindow_Close
+ 
+exit 0
 
 POL_Shortcut "ja2.exe" "$TITLE" "$TITLE.png"
  
