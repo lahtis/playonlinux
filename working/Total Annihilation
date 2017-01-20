@@ -15,7 +15,7 @@ source "$PLAYONLINUX/lib/sources"
 PREFIX="TotalAnnihilation"
 
 # FIXME!
-[ "$POL_OS" = "Mac" ] WORKINGWINEVERSION="1.2.3" || WORKINGWINEVERSION="2.0-rc5-staging"
+[ "$POL_OS" = "Mac" ] WORKING_WINE_VERSION="1.2.3" || WORKING_WINE_VERSION="2.0-rc5-staging"
 
 TITLE="Total Annihilation"
 EDITOR="Cavedog Entertainment / GT Interactive"           
