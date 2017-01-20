@@ -7,7 +7,7 @@
 # Script licence : GPLv2
 # Program version : Retail original CD version
 # Bug reports ->
-# Latest install script -> https://github.com/lahtis/playonlinux/blob/master/testing/ja2-unfinished-business
+# Latest install script -> https://github.com/lahtis/playonlinux/blob/master/working/ja2-unfinished-business
  
 [ -z "$PLAYONLINUX" = "" ] && exit
 source "$PLAYONLINUX/lib/sources"
