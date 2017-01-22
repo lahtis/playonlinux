@@ -80,16 +80,3 @@ POL_System_TmpDelete
 POL_SetupWindow_Close
  
 exit 0
-mv "PP2_download.php?id=0" "P2Installer_v1.0.3.exe"
- 
-POL_Wine_WaitBefore "$TITLE"
-POL_Wine "$POL_System_TmpDir/P2Installer_v1.0.3.exe"
-POL_Wine_WaitExit "$TITLE"
- 
-POL_System_TmpDelete
- 
-POL_Shortcut 'ProPilkki2.exe' "$TITLE"
- 
-POL_SetupWindow_Close
- 
-exit 0
