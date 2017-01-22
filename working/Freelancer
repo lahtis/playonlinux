@@ -58,19 +58,24 @@ POL_SetupWindow_question "$(eval_gettext 'Do you want to install $TITLE $UPDATE_
 if [ "$APP_ANSWER" = "TRUE" ]
 then
  
-	# Install patch 1.1
+	# Download patch 1.1
 	cd "$POL_System_TmpDir"
 	POL_Download "http://the-starport.net/freelancer/download/visit.php?cid=1&lid=2639" 
 
 	# Move file to correct filename
 	mv "visit.php?cid=1&lid=2639" "flpatch.zip" || POL_Debug_Fatal "$(eval_gettext 'Error rename the file!')"
+	
+	# Unzip patch
 	unzip "flpatch.zip" || POL_Debug_Fatal "$(eval_gettext 'Error unzip the file!')"
-	POL_Wine_WaitBefore "$TITLE - unzip"
+	POL_Wine_WaitBefore "$TITLE"
+	
+	# Install 1.1 patch 
 	POL_Wine "$POL_System_TmpDir/flpatch.exe" || POL_Debug_Fatal "$(eval_gettext 'Error file installing!')"
 	POL_Wine_WaitExit "$TITLE"
  
+ 	# Create server shortcut
 	POL_Shortcut "FLServer.exe" "$TITLE server" "$TITLE.png"
-	# End install patch 1.1
+	
 fi
  
 POL_System_TmpDelete
