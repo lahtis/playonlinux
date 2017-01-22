@@ -7,7 +7,7 @@
 # Script licence : GPLv2
 # Program version : Retail original 2 CD box
 # Bug reports -> 
-# Latest install script -> https://github.com/lahtis/playonlinux/blob/master/testing/TotalAnnihilation
+# Latest install script -> https://github.com/lahtis/playonlinux/blob/master/working/TotalAnnihilation
 
 [ -z "$PLAYONLINUX" = "" ] && exit
 source "$PLAYONLINUX/lib/sources"
