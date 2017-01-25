@@ -7,7 +7,7 @@
 # Script licence : GPLv2
 # Program version : Retail original CD version
 # Bug reports -> 
-# Latest install script -> https://github.com/lahtis/playonlinux/blob/master/working/Caesar3
+# Latest install script -> https://github.com/lahtis/playonlinux/tree/master/working/Caesar3/
 
 [ -z "$PLAYONLINUX" = "" ] && exit
 source "$PLAYONLINUX/lib/sources"
