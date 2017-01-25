@@ -37,7 +37,7 @@ POL_SetupWindow_presentation "$TITLE" "$EDITOR" "$GAME_URL" "$AUTHOR" "$PREFIX"
  
 POL_Wine_SelectPrefix "$PREFIX"
 POL_Wine_PrefixCreate "$WORKING_WINE_VERSION"
- POL_System_TmpCreate "$PREFIX"
+POL_System_TmpCreate "$PREFIX"
 POL_SetupWindow_VMS $GAME_VMS
 
 # Fix pulseaudio issue
