@@ -33,7 +33,7 @@ mkdir "$WINEPREFIX/drive_c/$PROGRAMFILES/WurmClock/"
 # Fix pulseaudio issue
 which pulseaudio && Set_OS "winxp"
 
-# Do you have downloaded the zip file?
+# Do you have downloaded the zip file? if no open browser.
 POL_SetupWindow_question "$(eval_gettext 'Do you have downloaded the zip file?')" "$TITLE"
 if [ "$APP_ANSWER" = "FALSE" ]
 then
