@@ -49,8 +49,7 @@ POL_Wine start /unix "$CDROM/install/SETUP.EXE" || POL_Debug_Fatal "$(eval_gette
 POL_Wine_WaitExit "$TITLE"
  
 # Create shortcuts and parameters (ja2.exe -resversion ENGLISH -res 1024x768)
-POL_Shortcut "ja2.exe" "$TITLE" "$TITLE.png"
-# POL_Shortcut "ja2.exe -resversion ENGLISH -res 1024x768" "$TITLE" "$TITLE.png"
+POL_Shortcut "ja2.exe" "$TITLE" "$TITLE.png" "-resversion ENGLISH -res 1024x768"
 
 
   
