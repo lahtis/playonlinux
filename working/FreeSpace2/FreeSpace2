@@ -1,0 +1,45 @@
+#!/bin/bash
+# Date : (2017-01-27 21-16)
+# Last revision : (2017-01-27 21-16)
+# Distribution used to test : Ubuntu 16.04 lts, 64-bit
+# Author : lahtis
+# Licence : GPLv3
+# Installer for Freespace 2 game
+# PlayOnLinux:  4.2.10
+# Latest found https://github.com/lahtis/playonlinux/blob/master/working/FreeSpace2/
+   
+[ -z "$PLAYONLINUX" ] && exit 0
+source "$PLAYONLINUX/lib/sources"
+  
+TITLE="Free Space 2"
+PREFIX="FreeSpace2"
+WORKING_WINE_VERSION="1.3.27"
+EDITOR="Volition, Inc. / Interplay Entertainment"
+GAME_URL=""
+AUTHOR="lahtis"
+GAME_VMS="32"
+ 
+POL_GetSetupImages "http://files.playonlinux.com/resources/setups/$PREFIX/top.jpg" "http://files.playonlinux.com/resources/setups/$PREFIX/left.jpg" "$TITLE"
+POL_SetupWindow_Init
+POL_Debug_Init
+ 
+POL_SetupWindow_presentation "$TITLE" "$EDITOR" "$GAME_URL" "$AUTHOR" "$PREFIX"
+ 
+POL_Wine_SelectPrefix "$PREFIX"
+POL_System_SetArch "x86"
+POL_Wine_PrefixCreate "$WORKING_WINE_VERSION"
+POL_System_TmpCreate "$PREFIX"
+ 
+# Fix pulseaudio issue
+which pulseaudio && Set_OS "winxp"
+
+# Asking about memory size of graphic card
+POL_SetupWindow_VMS "$GAME_VMS"
+  
+cd "$POL_System_TmpDir"
+
+
+POL_System_TmpDelete
+POL_SetupWindow_Close
+ 
+exit 0
