@@ -1,17 +1,25 @@
 #!/bin/bash
 [ -z "$PLAYONLINUX" ]  && exit 0
 source "$PLAYONLINUX/lib/sources"
-      
+
+TITLE="Unity 3D"
+PREFIX="Unity3D"
+WORKING_WINE_VERSION="1.7.42"
+EDITOR="Unity"
+GAME_URL="http://www.unity3d.com/"
+AUTHOR="Cauê Waneck, lahtis"
+GAME_VMS="512"
+
 POL_GetSetupImages "http://files.playonlinux.com/resources/setups/$PREFIX/top.jpg" "http://files.playonlinux.com/resources/setups/$PREFIX/left.jpg" "$TITLE"
 POL_SetupWindow_Init
 POL_Debug_Init
       
-POL_SetupWindow_presentation "Unity 3D" "Unity" "http://www.unity3d.com/" "Cauê Waneck" "Unity3D"
+POL_SetupWindow_presentation "$TITLE" "$EDITOR" "$GAME_URL" "$AUTHOR" "$PREFIX"
       
 # Create prefix
 export WINEARCH="win32"
-POL_Wine_SelectPrefix "Unity3D"
-POL_Wine_PrefixCreate "1.7.42"
+POL_Wine_SelectPrefix "$PREFIX"
+POL_Wine_PrefixCreate "$WORKING_WINE_VERSION"
 
 # Setup prefix
 POL_Wine_InstallFonts
