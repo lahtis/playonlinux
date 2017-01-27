@@ -43,10 +43,10 @@ which pulseaudio && Set_OS "winxp"
  
 # Asking for CDROM and checking if it's correct one
 POL_SetupWindow_message "$(eval_gettext 'Please insert the game media into your disk drive')" "$TITLE"
-POL_SetupWindow_check_cdrom "install/SETUP.EXE"
+POL_SetupWindow_check_cdrom "Setup.exe"
 POL_SetupWindow_cdrom
  
-POL_Wine start /unix "$CDROM/install/SETUP.EXE" || POL_Debug_Fatal "$(eval_gettext 'Error while installing game.')"
+POL_Wine start /unix "$CDROM/Setup.exe" || POL_Debug_Fatal "$(eval_gettext 'Error while installing game.')"
 POL_Wine_WaitExit "$TITLE"
  
 # Create shortcuts
