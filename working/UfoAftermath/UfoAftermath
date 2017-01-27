@@ -1,0 +1,48 @@
+#!/bin/bash
+# Date : (2013-02-20)
+# Last revision : (2013-02-20)
+# Distribution used to test : Ubuntu 12.10, Nvidia geforce 9800 GT
+# Author : lahtis
+# Licence : retail
+# PlayOnLinux: 4.1.9
+# CD-version installer
+ 
+[-z "$PLAYONLINUX" = "" ] && exit 0
+source "$PLAYONLINUX/lib/sources"
+ 
+PREFIX="UfoAftermath"
+WINEVERSION="1.5.24"
+TITLE="Ufo: aftermath"
+EDITOR="ALTAR Interactive"
+GAME_URL="http://www.ufo-aftermath.com"
+AUTHOR="lahtis"
+ 
+#Initialization
+POL_GetSetupImages "http://files.playonlinux.com/resources/setups/$PREFIX/top.jpg" "http://files.playonlinux.com/resources/setups/$PREFIX/left.jpg" "$TITLE"
+POL_SetupWindow_Init
+     
+POL_Debug_Init
+     
+# Presentation
+POL_SetupWindow_presentation "$TITLE" "$EDITOR" "$GAME_URL" "$AUTHOR" "$PREFIX"
+ 
+# Create Prefix
+POL_Wine_SelectPrefix "$PREFIX"
+POL_System_SetArch "x86"
+POL_Wine_PrefixCreate "$WINEVERSION"
+ 
+# Fix pulseaudio issue
+which pulseaudio && Set_OS "winxp"
+ 
+POL_SetupWindow_browse "Please select the installation file to run." "$TITLE installation"
+POL_SetupWindow_wait "Installation in progress." "$TITLE installation"
+POL_Wine start /unix "$APP_ANSWER"
+POL_Wine_WaitExit "$TITLE"
+ 
+POL_Shortcut "UFO.exe" "$TITLE"
+ 
+POL_SetupWindow_message "$(eval_gettext '$TITLE has been successfully installed.\n\nIf the game crashes at startup, open a terminal and type:\necho 0|sudo tee /proc/sys/kernel/yama/ptrace_scope')"
+ 
+POL_SetupWindow_Close
+ 
+exit 0
