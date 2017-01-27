@@ -1,0 +1,84 @@
+#!/bin/bash
+# Date : (2013-03-01 17-00)
+# Last revision : (2017-01-22 18:39)
+# Wine version used : 1.5.24
+# Distribution used to test : Ubuntu 12.10, Nvidia Geforce 9800 GT 512MB using
+# nvidia-experimental-310 driver, Intel® Core™2 Duo CPU E4400 @ 2.00GHz×2, Memory 1,9 GiB
+# Author : lahtis lahtis@gmail.com
+# Script licence : GPLv.2
+# Program licence : Retail
+# Freelancer installer and 1.1 offical patch.
+ 
+# CHANGELOG
+# [SuperPlumus] (2013-07-24 09-13)
+#   Update gettext messages
+#   Clean code
+#   Fix POL_Install_directplay call (missing POL_Call)
+#   Fix $PLAYONLINUX variable check presence
+ 
+[ -z "$PLAYONLINUX" ] && exit
+source "$PLAYONLINUX/lib/sources"
+ 
+TITLE="Freelancer"
+PREFIX="Freelancer"
+WORKING_WINE_VERSION="1.5.24"
+EDITOR="Microsoft game studios"
+GAME_URL="http://www.microsoft.com/games/freelancer/default.aspx"
+AUTHOR="lahtis"
+GAME_VMS="512"
+
+UPDATE_VERSION="1.1"
+ 
+POL_GetSetupImages "http://files.playonlinux.com/resources/setups/$PREFIX/top.jpg" "http://files.playonlinux.com/resources/setups/$PREFIX/left.jpg" "$TITLE"
+POL_SetupWindow_Init
+POL_Debug_Init
+ 
+POL_SetupWindow_presentation "$TITLE" "$EDITOR" "$GAME_URL" "$AUTHOR" "$PREFIX"
+ 
+POL_Wine_SelectPrefix "$PREFIX"
+POL_Wine_PrefixCreate "$WORKING_WINE_VERSION"
+POL_System_TmpCreate "$PREFIX"
+POL_SetupWindow_VMS $GAME_VMS
+
+# Fix pulseaudio issue
+which pulseaudio && Set_OS "winxp" 
+
+Set_Desktop "On" "1024" "768"
+ 
+POL_Call POL_Install_directplay
+ 
+POL_SetupWindow_cdrom
+POL_SetupWindow_check_cdrom "00000000.016"
+POL_Wine start /unix "$CDROM/SETUP.EXE"
+POL_Wine_WaitExit "$TITLE"
+ 
+POL_Shortcut "Freelancer.exe" "$TITLE" "$TITLE.png"
+
+POL_SetupWindow_question "$(eval_gettext 'Do you want to install $TITLE $UPDATE_VERSION update?')" "$TITLE"
+if [ "$APP_ANSWER" = "TRUE" ]
+then
+ 
+	# Download patch 1.1
+	cd "$POL_System_TmpDir"
+	POL_Download "http://the-starport.net/freelancer/download/visit.php?cid=1&lid=2639" 
+
+	# Move file to correct filename
+	mv "visit.php?cid=1&lid=2639" "flpatch.zip" || POL_Debug_Fatal "$(eval_gettext 'Error rename the file!')"
+	
+	# Unzip patch
+	unzip "flpatch.zip" || POL_Debug_Fatal "$(eval_gettext 'Error unzip the file!')"
+	POL_Wine_WaitBefore "$TITLE"
+	
+	# Install 1.1 patch 
+	POL_Wine "$POL_System_TmpDir/flpatch.exe" || POL_Debug_Fatal "$(eval_gettext 'Error file installing!')"
+	POL_Wine_WaitExit "$TITLE"
+ 
+ 	# Create server shortcut
+	POL_Shortcut "FLServer.exe" "$TITLE server" "$TITLE.png"
+	
+fi
+ 
+POL_System_TmpDelete
+POL_SetupWindow_Close
+ 
+exit 0
