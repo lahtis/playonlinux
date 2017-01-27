@@ -4,7 +4,7 @@
 # Distribution used to test : Ubuntu 16.04 lts, 32-bit
 # Author : lahtis
 # Licence : GPLv3
-# Installer for Freespace 2 game
+# Installer for Freespace 2 game (3-CD)
 # PlayOnLinux:  4.2.10
 # Latest found https://github.com/lahtis/playonlinux/blob/master/working/FreeSpace2/
    
@@ -38,8 +38,26 @@ POL_SetupWindow_VMS "$GAME_VMS"
   
 cd "$POL_System_TmpDir"
 
+# Fix pulseaudio issue
+which pulseaudio && Set_OS "winxp"
+ 
+# Asking for CDROM and checking if it's correct one
+POL_SetupWindow_message "$(eval_gettext 'Please insert the game media into your disk drive')" "$TITLE"
+POL_SetupWindow_check_cdrom "install/SETUP.EXE"
+POL_SetupWindow_cdrom
+ 
+POL_Wine start /unix "$CDROM/install/SETUP.EXE" || POL_Debug_Fatal "$(eval_gettext 'Error while installing game.')"
+POL_Wine_WaitExit "$TITLE"
+ 
+# Create shortcuts
+POL_Shortcut "FreeSpace2.exe" "$TITLE" "$TITLE.png" 
+  
+POL_SetupWindow_message "$(eval_gettext '$TITLE has been successfully installed.')"
 
 POL_System_TmpDelete
 POL_SetupWindow_Close
- 
+  
 exit 0
+
+
+
