@@ -1,7 +1,7 @@
 #!/bin/bash
 # Date : (2017-01-27 21-16)
 # Last revision : (2017-01-27 21-16)
-# Distribution used to test : Ubuntu 16.04 lts, 64-bit
+# Distribution used to test : Ubuntu 16.04 lts, 32-bit
 # Author : lahtis
 # Licence : GPLv3
 # Installer for Freespace 2 game
