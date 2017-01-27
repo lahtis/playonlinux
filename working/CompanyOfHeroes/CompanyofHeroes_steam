@@ -1,0 +1,78 @@
+#!/bin/bash
+# Date : (2013-02-28 22-08)
+# Last revision : (2013-07-24 09-05)
+# Wine version used : 1.5.3 (only working)
+# Distribution used to test : Ubuntu 12.10
+# Author : lahtis
+# Script licence : GPL v.2
+# Program licence : Retail
+# Installer for Steam - Company of Heroes
+# also install you own DLC...
+ 
+# CHANGELOG
+# [SuperPlumus] (2013-07-24 09-05)
+#   Update gettext messages
+#   Clean code
+ 
+[ -z "$PLAYONLINUX" ] && exit 0
+source "$PLAYONLINUX/lib/sources"
+ 
+TITLE="Company of Heroes"
+PREFIX="CompanyofHeroes_steam"
+WORKING_WINE_VERSION="1.5.3"
+STEAM_ID="4560"
+EDITOR="Relic Entertainment / THQ"
+GAME_URL="http://www.relic.com/games/company-of-heroes/"
+AUTHOR="lahtis"
+GAME_VMS="512"
+ 
+#Initialization
+POL_GetSetupImages "http://files.playonlinux.com/resources/setups/$PREFIX/top.jpg" "http://files.playonlinux.com/resources/setups/$PREFIX/left.jpg" "$TITLE"
+ 
+POL_SetupWindow_Init
+POL_Debug_Init
+ 
+# Presentation
+POL_SetupWindow_presentation "$TITLE" "$EDITOR" "$GAME_URL" "$AUTHOR" "$PREFIX"
+ 
+# Create Prefix
+POL_Wine_SelectPrefix "$PREFIX"
+POL_Wine_PrefixCreate "$WORKING_WINE_VERSION"
+POL_System_TmpCreate "$PREFIX"
+ 
+# Fix pulseaudio issue
+which pulseaudio && Set_OS "winxp"
+ 
+# Asking about memory size of graphic card
+POL_SetupWindow_VMS $GAME_VMS
+ 
+# Select install method
+POL_SetupWindow_InstallMethod "STEAM"
+ 
+# Downloading and install Visual C++ 2005 libraries
+POL_Call POL_Install_vcrun2005
+ 
+# downloading and install directx
+POL_Call POL_Install_d3dx9
+POL_Wine_OverrideDLL builtin d3dx9_43
+ 
+# Installing Steam
+POL_Call POL_Install_steam
+ 
+# Mandatory pre-install fix for steam
+POL_Call POL_Install_steam_flags "$STEAM_ID"
+ 
+# Shortcut done before install for steam version
+POL_Shortcut "steam.exe" "$TITLE" "$TITLE.png" "steam://rungameid/$STEAM_ID"
+POL_Shortcut "steam.exe" "Steam ($TITLE)" "" ""
+ 
+cd "$WINEPREFIX/drive_c/$PROGRAMFILES/Steam"
+POL_Wine_WaitBefore "$TITLE"
+POL_Wine start /unix "steam.exe" steam://install/$STEAM_ID
+POL_Wine_WaitExit "$TITLE"
+ 
+POL_System_TmpDelete
+ 
+POL_SetupWindow_Close
+ 
+exit 0
