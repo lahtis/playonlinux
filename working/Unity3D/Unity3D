@@ -55,7 +55,7 @@ POL_SetupWindow_browse "$(eval_gettext 'Please select the location of the Unity3
 UNITYLOC=$APP_ANSWER
 POL_Wine "$UNITYLOC"
       
-POL_Shortcut "Unity.exe" "Unity 3D"
+POL_Shortcut "Unity.exe" "$TITLE"
       
 POL_SetupWindow_Close
  
