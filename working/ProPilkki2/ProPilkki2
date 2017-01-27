@@ -56,7 +56,7 @@ POL_Wine_WaitBefore "$TITLE"
 POL_Wine "$POL_System_TmpDir/P2Installer_v1.1.exe" || POL_Debug_Fatal "$(eval_gettext 'Error file installing!')"
 POL_Wine_WaitExit "$TITLE"
   
-POL_Shortcut 'ProPilkki2.exe' "$TITLE" || POL_Debug_Fatal "$(eval_gettext 'Error in shortcut!')"
+POL_Shortcut "ProPilkki2.exe" "$TITLE" || POL_Debug_Fatal "$(eval_gettext 'Error in shortcut!')"
 
 POL_SetupWindow_question "$(eval_gettext 'Do you want to install $TITLE $UPDATE_VERSION update?')" "$TITLE"
 if [ "$APP_ANSWER" = "TRUE" ]
