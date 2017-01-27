@@ -1,0 +1,55 @@
+#!/bin/bash
+# Date : (2015-07-12 20:03)
+# Last revision : (2015-07-22 17:35)
+# Distribution used to test : Ubuntu 14.04
+# Author : lahtis
+# Licence : GPLv3
+# Small Wurm Clock destop installer application (WURM Online game)
+# PlayOnLinux: 4.2.8
+
+[ -z "$PLAYONLINUX" ] && exit 0
+source "$PLAYONLINUX/lib/sources"
+ 
+TITLE="Wurm Clock"
+PREFIX="WurmClock"
+WORKING_WINE_VERSION="1.7.47"
+EDITOR="Yaga, Hakim"
+GAME_URL="http://forum.wurmonline.com/index.php?/topic/61451-wurmclock-desktop-app-showing-current-wurm-time-and-date/"
+AUTHOR="lahtis"
+
+POL_GetSetupImages "http://files.playonlinux.com/resources/setups/$PREFIX/top.jpg" "http://files.playonlinux.com/resources/setups/$PREFIX/left.jpg" "$TITLE"
+POL_SetupWindow_Init
+POL_Debug_Init
+ 
+POL_SetupWindow_presentation "$TITLE" "$EDITOR" "$GAME_URL" "$AUTHOR" "$PREFIX"
+ 
+POL_Wine_SelectPrefix "$PREFIX"
+POL_System_SetArch "x86"
+POL_Wine_PrefixCreate "$WORKING_WINE_VERSION"
+
+# create WurmClock folder in the $PROGRAMFILES
+mkdir "$WINEPREFIX/drive_c/$PROGRAMFILES/WurmClock/"
+
+# Fix pulseaudio issue
+which pulseaudio && Set_OS "winxp"
+
+# Do you have downloaded the zip file?
+POL_SetupWindow_question "$(eval_gettext 'Do you have downloaded the zip file?')" "$TITLE"
+if [ "$APP_ANSWER" = "FALSE" ]
+then
+	#POL_Browser "https://www.dropbox.com/s/afpg9u7p4rcw0vc/WurmClock202.ZIP"
+	POL_Browser "http://forum.wurmonline.com/index.php?/topic/61451-wurmclock-desktop-app-showing-current-wurm-time-and-date/"
+fi
+
+# unzip zip file, zip-file has not installer. Zip-file only carry the exe-file and pdf-guides.
+POL_SetupWindow_browse "$(eval_gettext 'Please select the downloaded zip file.')" "$TITLE"
+
+cd "$WINEPREFIX/drive_c/$PROGRAMFILES/WurmClock/"
+POL_System_unzip "$APP_ANSWER" 
+
+POL_Shortcut "WurmClock.exe" "$TITLE"
+POL_Shortcut_Document "Wurm Clock help" "WurmClock.pdf"
+
+POL_SetupWindow_Close
+ 
+exit 0
