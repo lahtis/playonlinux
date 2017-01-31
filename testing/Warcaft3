@@ -12,7 +12,7 @@
 source "$PLAYONLINUX/lib/sources"
  
 PREFIX="Warcaft3"
-WORKING_WINE_VERSION="1.7.37"
+WORKING_WINE_VERSION="1.9.21"
 TITLE="Warcaft 3"
 EDITOR="Blizzard Entertainment"          
 GAME_URL="http://www.blizzard.com"
