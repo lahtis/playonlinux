@@ -1,0 +1,78 @@
+#!/bin/bash
+# Date : (2017-01-19 16:27)
+# Last revision : (2017-01-19 16:27)
+# Wine version used : 2.0-rc5
+# Distribution used to test : Ubuntu 16.04 LTS, 64 bit
+# Author : lahtis <lahtis@gmail.com>
+# Script licence : GPLv2
+# Not working: 2.0-rc5
+# Itch installler
+
+
+[ -z "$PLAYONLINUX" = "" ] && exit
+source "$PLAYONLINUX/lib/sources"
+
+PREFIX="Itch"
+WORKING_WINE_VERSION="1.3.13 "
+TITLE="Itch"
+EDITOR="itch corp"
+GAME_URL="https://itch.io/"
+AUTHOR="lahtis"
+GAME_VMS="256"
+
+
+# Initialization
+POL_GetSetupImages "http://files.playonlinux.com/resources/setups/$PREFIX/top.jpg" "http://files.playonlinux.com/resources/setups/$PREFIX/left.jpg" "$TITLE"
+
+POL_SetupWindow_Init
+POL_Debug_Init
+ 
+# Presentation
+POL_SetupWindow_presentation "$TITLE update $UPDATE_VERSION" "$EDITOR" "$GAME_URL" "$AUTHOR" "$PREFIX"
+
+if [ -e "$POL_USER_ROOT/wineprefix/Itch" ]; then
+    POL_SetupWindow_textbox "$(eval_gettext 'Please choose a virtual drive name')" "$TITLE"
+    PREFIX="$APP_ANSWER"
+else
+    PREFIX="Itch"
+fi
+
+# Create Prefix
+POL_Wine_SelectPrefix "$PREFIX"
+POL_System_SetArch "x64"
+POL_Wine_PrefixCreate "$WORKING_WINE_VERSION"
+POL_System_TmpCreate "$PREFIX"
+Set_OS "win7"
+
+# Installing mandatory dependencies
+POL_Wine_InstallFonts
+POL_Call POL_Install_corefonts
+POL_Call POL_Function_FontsSmoothRGB
+ 
+# Fix to prevent Steam from launching without text after update
+POL_Wine_OverrideDLL "" "dwrite"
+
+# Download update file.
+cd "$POL_System_TmpDir"
+POL_Download "http://nuts.itch.zone/download/windows"
+POL_Wine_WaitBefore "$TITLE" 
+
+# Move file to correct filename
+mv "windows" "itchSetup.exe" || POL_Debug_Fatal "$(eval_gettext 'Error file re-naming!')"
+
+# Installing update
+POL_Wine "$POL_System_TmpDir/itchSetup.exe" || POL_Debug_Fatal "$(eval_gettext 'Error file installing!')"
+POL_Wine_WaitExit "$TITLE"
+
+# Making shortcut
+POL_Shortcut "Itch.exe" "$TITLE"
+
+# Asking about memory size of graphic card
+POL_SetupWindow_VMS "$GAME_VMS"
+
+POL_SetupWindow_message "$(eval_gettext 'If you want to install $TITLE in another virtual drive\nRun this installer again')" "$TITLE"
+ 
+POL_System_TmpDelete 
+POL_SetupWindow_Close
+ 
+exit 0
