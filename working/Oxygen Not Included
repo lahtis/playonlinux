@@ -1,0 +1,60 @@
+#!/bin/bash
+# Date : (2017-11-17)
+# Last revision : (2017-11-17)
+# Distribution used to test : Ubuntu 14.04
+# Author : lahtis
+# Licence : retail
+# PlayOnLinux: 4.2.12
+ 
+[-z "$PLAYONLINUX" = "" ] && exit 0
+source "$PLAYONLINUX/lib/sources"
+ 
+PREFIX="OxygenNotIncluded"
+WINEVERSION="2.19-staging"
+TITLE="Oxygen Not Included"
+EDITOR="Klei"
+GAME_URL="https://www.klei.com/games/oxygen-not-included"
+AUTHOR="lahtis"
+ 
+#Initialization
+POL_GetSetupImages "http://files.playonlinux.com/resources/setups/$PREFIX/top.jpg" "http://files.playonlinux.com/resources/setups/$PREFIX/left.jpg" "$TITLE"
+POL_SetupWindow_Init
+      
+POL_Debug_Init
+      
+# Presentation
+POL_SetupWindow_presentation "$TITLE" "$EDITOR" "$GAME_URL" "$AUTHOR" "$PREFIX"
+ 
+# Create Prefix
+POL_Wine_SelectPrefix "$PREFIX"
+POL_System_SetArch "x64"
+POL_Wine_PrefixCreate "$WINEVERSION" 
+GAME_VMS="512"
+STEAM_ID="457140"
+ 
+# Fix pulseaudio issue
+which pulseaudio && Set_OS "win8"
+  
+# Asking about memory size of graphic card
+POL_SetupWindow_VMS $GAME_VMS
+ 
+# Installing mandatory dependencies
+POL_Call POL_Install_steam
+ 
+# Mandatory pre-install fix for steam
+POL_Call POL_Install_steam_flags "$STEAM_ID"
+  
+# Shortcut done before install for steam version
+POL_Shortcut "steam.exe" "$TITLE" "$TITLE.png" "steam://rungameid/$STEAM_ID"
+POL_Shortcut "steam.exe" "Steam ($TITLE)" "" ""
+ 
+POL_SetupWindow_message "$(eval_gettext 'Install $TITLE in Steam. Run the $TITLE when Steam is installed the game.')" "$TITLE"
+cd "$WINEPREFIX/drive_c/$PROGRAMFILES/Steam"
+POL_Wine start /unix "steam.exe" steam://install/$STEAM_ID
+POL_Wine_WaitExit "$TITLE"
+      
+ POL_SetupWindow_message "$(eval_gettext 'If the game crashes at startup, open a terminal and type:\necho 0|sudo tee /proc/sys/kernel/yama/ptrace_scope')"
+ 
+POL_SetupWindow_Close
+ 
+exit 0
