@@ -1,0 +1,86 @@
+#!/bin/bash
+# Date : (2017-12-01 06:31)
+# Last revision : (2017-01-19 16:27)
+# Wine version used : 
+# Distribution used to test : Ubuntu 16.04 LTS, 64 bit
+# Author : lahtis <lahtis@gmail.com>
+# Script licence : GPLv2
+# Not working: 
+# Epic Games Launcher installer
+
+
+[ -z "$PLAYONLINUX" = "" ] && exit
+source "$PLAYONLINUX/lib/sources"
+
+PREFIX="EpicGamesLauncher"
+WORKING_WINE_VERSION="2.9-staging"
+TITLE="Epic Games Launcher"
+EDITOR="Epic Games, Inc"
+GAME_URL="https://www.epicgames.com"
+AUTHOR="lahtis"
+GAME_VMS="2048"
+
+
+# Initialization
+POL_GetSetupImages "http://files.playonlinux.com/resources/setups/$PREFIX/top.jpg" "http://files.playonlinux.com/resources/setups/$PREFIX/left.jpg" "$TITLE"
+
+POL_SetupWindow_Init
+POL_Debug_Init
+ 
+# Presentation
+POL_SetupWindow_presentation "$TITLE update $UPDATE_VERSION" "$EDITOR" "$GAME_URL" "$AUTHOR" "$PREFIX"
+
+if [ -e "$POL_USER_ROOT/wineprefix/EpicGamesLauncher" ]; then
+    POL_SetupWindow_textbox "$(eval_gettext 'Please choose a virtual drive name')" "$TITLE"
+    PREFIX="$APP_ANSWER"
+else
+    PREFIX="EpicGamesLauncher"
+fi
+
+# Create Prefix
+POL_Wine_SelectPrefix "$PREFIX"
+POL_System_SetArch "x64"
+POL_Wine_PrefixCreate "$WORKING_WINE_VERSION"
+POL_System_TmpCreate "$PREFIX"
+Set_OS "win7"
+
+# Installing mandatory dependencies
+POL_Wine_InstallFonts
+POL_Call POL_Install_corefonts
+POL_Call POL_Function_FontsSmoothRGB
+ 
+# Fix to prevent Steam from launching without text after update
+POL_Wine_OverrideDLL "" "dwrite"
+
+# Registry
+regfile=$(mktemp --suffix=.REG)
+echo "REGEDIT4" > "$regfile"
+echo "" >> "$regfile"
+echo "[HKEY_CURRENT_USER\\Software\\Wine\\Direct3D]" >> "$regfile"
+echo '"DWORD "="MaxVersionGL hexa 300002"' >> "$regfile"
+      
+POL_Wine regedit "$regfile"
+
+# Download update file.
+cd "$POL_System_TmpDir"
+POL_Download "https://launcher-public-service-prod06.ol.epicgames.com/launcher/api/installer/download/EpicGamesLauncherInstaller.msi"
+POL_Wine_WaitBefore "$TITLE" 
+
+# Installing update
+POL_Wine "$POL_System_TmpDir/EpicGamesLauncherInstaller.msi" || POL_Debug_Fatal "$(eval_gettext 'Error file installing!')"
+POL_Wine_WaitExit "$TITLE"
+
+# Making shortcut
+POL_Shortcut_InsertBeforeWine "$TITLE" "-SkipBuildPatchPrereq -OpenGL"
+POL_Shortcut "UE4Game.exe" "$TITLE"
+POL_Shortcut "UE4Editor.exe" "$TITLE - editor"
+
+# Asking about memory size of graphic card
+POL_SetupWindow_VMS "$GAME_VMS"
+
+POL_SetupWindow_message "$(eval_gettext 'If you want to install $TITLE in another virtual drive\nRun this installer again')" "$TITLE"
+ 
+POL_System_TmpDelete 
+POL_SetupWindow_Close
+ 
+exit 0
