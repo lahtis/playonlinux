@@ -52,6 +52,14 @@ POL_Call POL_Function_FontsSmoothRGB
 # Fix to prevent Steam from launching without text after update
 POL_Wine_OverrideDLL "" "dwrite"
 
+# Subject: Version 6.9.1 installed, but launcher fails.
+
+# worked around the installation : wine resgistry edited :
+# hkey_current_user>Software>Wine
+# new key Direct3D
+# inside direc3D new DWORD MaxVersionGL hexa 300002
+# Installation seems ok, but the launcher fails so far.
+
 # Registry
 regfile=$(mktemp --suffix=.REG)
 echo "REGEDIT4" > "$regfile"
