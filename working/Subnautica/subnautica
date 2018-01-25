@@ -9,15 +9,17 @@
 [-z "$PLAYONLINUX" = "" ] && exit 0
 source "$PLAYONLINUX/lib/sources"
  
-PREFIX="subnautica"
+PREFIX="Subnautica"
 WINEVERSION="2.21-staging"
 TITLE="Subnautica"
 EDITOR="Unknown Worlds"
 GAME_URL="https://unknownworlds.com/subnautica/"
 AUTHOR="lahtis"
  
-#Initialization
-POL_GetSetupImages "http://files.playonlinux.com/resources/setups/$PREFIX/top.jpg" "http://files.playonlinux.com/resources/setups/$PREFIX/left.jpg" "$TITLE"
+# Initialization
+# Setup files found https://github.com/lahtis/playonlinux/blob/master/working/Subnautica/
+# http://files.playonlinux.com/resources/setups/$PREFIX/left.jpg
+POL_GetSetupImages "https://github.com/lahtis/playonlinux/blob/master/working/$PREFIX/top.jpg" "https://github.com/lahtis/playonlinux/blob/master/working/$PREFIX/left.jpg" "$TITLE"
 POL_SetupWindow_Init
       
 POL_Debug_Init
@@ -33,7 +35,7 @@ GAME_VMS="512"
 STEAM_ID="264710"
  
 # Fix pulseaudio issue
-which pulseaudio && Set_OS "win7"
+which pulseaudio && Set_OS "winxp"
   
 # Asking about memory size of graphic card
 POL_SetupWindow_VMS $GAME_VMS
