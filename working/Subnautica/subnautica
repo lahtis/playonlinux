@@ -1,6 +1,6 @@
 #!/bin/bash
 # Date : (2017-01-24)
-# Last revision : (2017-01-24)
+# Last revision : (2017-01-26)
 # Distribution used to test : Ubuntu 16.04
 # Author : lahtis
 # Licence : retail
@@ -9,7 +9,7 @@
 [-z "$PLAYONLINUX" = "" ] && exit 0
 source "$PLAYONLINUX/lib/sources"
  
-PREFIX="Subnautica"
+PREFIX="Subnautica-test"
 WINEVERSION="2.21-staging"
 TITLE="Subnautica"
 EDITOR="Unknown Worlds"
@@ -18,8 +18,7 @@ AUTHOR="lahtis"
  
 # Initialization
 # Setup files found https://github.com/lahtis/playonlinux/blob/master/working/Subnautica/
-# http://files.playonlinux.com/resources/setups/$PREFIX/left.jpg
-POL_GetSetupImages "https://github.com/lahtis/playonlinux/blob/master/working/$PREFIX/top.jpg" "https://github.com/lahtis/playonlinux/blob/master/working/$PREFIX/left.jpg" "$TITLE"
+POL_GetSetupImages "http://files.playonlinux.com/resources/setups/$PREFIX/top.jpg" "http://files.playonlinux.com/resources/setups/$PREFIX/left.jpg" "$TITLE"
 POL_SetupWindow_Init
       
 POL_Debug_Init
@@ -39,6 +38,40 @@ which pulseaudio && Set_OS "winxp"
   
 # Asking about memory size of graphic card
 POL_SetupWindow_VMS $GAME_VMS
+
+# Disable Steam In Game Overlay
+POL_Wine_OverrideDLL "" "gameoverlayrenderer" # To disable the DLL
+  
+
+POL_Wine_Direct3D "CSMT" "enabled"
+Set_Managed "Off"
+
+POL_SetupWindow_question "$(eval_gettext 'Do you want to open $TITLE install guide in your browser?')" "$TITLE"
+
+	if [ "$APP_ANSWER" = "TRUE" ] 
+	then 
+	POL_Browser "https://steamcommunity.com/app/264710/discussions/0/1484358860940334488/"
+	fi
+
+# Registery fix
+cat << EOF > Steam.reg
+REGEDIT4
+ 
+[HKEY_CURRENT_USER\Software\Wine\AppDefaults\Steam.exe]
+"Version"="winxp64"
+EOF
+
+POL_Wine regedit.exe steam.reg
+
+cat << EOF > steamwebhelper.reg
+REGEDIT4
+ 
+[HKEY_CURRENT_USER\Software\Wine\AppDefaults\steamwebhelper.exe]
+"Version"="winxp64"
+EOF
+
+POL_Wine regedit.exe steamwebhelper.reg
+
  
 # Installing mandatory dependencies
 POL_Call POL_Install_corefonts
@@ -47,6 +80,24 @@ POL_Call POL_Install_corefonts
 POL_Call POL_Install_steam
  
 # Mandatory pre-install fix for steam
+POL_Call POL_Install_steam_flags "$STEAM_ID"
+  
+# Shortcut done before install for steam version
+POL_Shortcut "steam.exe" "$TITLE" "$TITLE.png" "steam://rungameid/$STEAM_ID"
+POL_Shortcut "steam.exe" "Steam ($TITLE)" "-no-cef-sandbox -force-glcore45" ""
+
+Set_OS "win7"
+
+POL_SetupWindow_message "$(eval_gettext 'Install $TITLE in Steam. Run the $TITLE when Steam is installed the game.')" "$TITLE"
+cd "$WINEPREFIX/drive_c/$PROGRAMFILES/Steam"
+POL_Wine start /unix "steam.exe" steam://install/$STEAM_ID
+POL_Wine_WaitExit "$TITLE"
+      
+POL_SetupWindow_message "$(eval_gettext 'If the game crashes at startup, open a terminal and type:\necho 0|sudo tee /proc/sys/kernel/yama/ptrace_scope')"
+ 
+POL_SetupWindow_Close
+ 
+exit 0
 POL_Call POL_Install_steam_flags "$STEAM_ID"
   
 # Shortcut done before install for steam version
