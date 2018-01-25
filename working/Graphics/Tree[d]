@@ -47,7 +47,7 @@ then
 elif [ "$INSTALL_METHOD" = "DOWNLOAD" ]
 then
     cd "$POL_System_TmpDir"
-    POL_Download "https://dl.dropboxusercontent.com/u/62997820/tree%5Bd%5D-setup310.exe"
+    POL_Download "https://web.archive.org/web/20121114120349/http://www.frecle.net/treed/tree[d]-setup310.exe"
     POL_Wine_WaitBefore "$TITLE"
     POL_Wine start /unix "tree%5Bd%5D-setup310.exe"
     POL_Wine_WaitExit "$TITLE"
