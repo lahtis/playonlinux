@@ -1,82 +1,63 @@
 #!/bin/bash
 # Date : (2013-02-26 ??-??)
-# Last revision : (2017-01-20 21-16)
+# Last revision : (2018-01-26 18:12)
 # Distribution used to test : Ubuntu 16.04 lts, 64-bit
 # Author : lahtis
 # Licence : GPLv3
 # Installer for Pro pilkki 2 v1.1 and update 1.1.5
-# PlayOnLinux: 4.1.9, 4.2.1, 4.2.9 4.2.10
+# PlayOnLinux: 4.1.9, 4.2.1, 4.2.9 4.2.10, 4.2.12
 # Latest found https://github.com/lahtis/playonlinux/blob/master/working/ProPilkki2
- 
+  
 # CHANGELOG
 # [SuperPlumus] (2013-07-24 09-37)
 #   Update gettext messages
 #   Clean code
 #   Fix $PLAYONLINUX check presence
- 
+  
 [ -z "$PLAYONLINUX" ] && exit 0
 source "$PLAYONLINUX/lib/sources"
- 
+  
 TITLE="Pro Pilkki 2"
 PREFIX="ProPilkki2"
-WORKING_WINE_VERSION="2.0-rc5"
+WORKING_WINE_VERSION="3.0"
 EDITOR="Team Procyon"
 GAME_URL="http://www.kalassa.net"
 AUTHOR="lahtis"
 GAME_VMS="512"
-
-CURRENT_VERSION="v.1.1"
-UPDATE_VERSION="v.1.1.5"
  
+CURRENT_VERSION="v.1.2"
+  
 POL_GetSetupImages "http://files.playonlinux.com/resources/setups/$PREFIX/top.jpg" "http://files.playonlinux.com/resources/setups/$PREFIX/left.jpg" "$TITLE"
 POL_SetupWindow_Init
 POL_Debug_Init
- 
+  
 POL_SetupWindow_presentation "$TITLE" "$EDITOR" "$GAME_URL" "$AUTHOR" "$PREFIX"
- 
+  
 POL_Wine_SelectPrefix "$PREFIX"
 POL_System_SetArch "x86"
 POL_Wine_PrefixCreate "$WORKING_WINE_VERSION"
- 
+  
 POL_System_TmpCreate "$PREFIX"
- 
+  
 # Fix pulseaudio issue
 which pulseaudio && Set_OS "win8"
- 
+  
 # Asking about memory size of graphic card
 POL_SetupWindow_VMS $GAME_VMS
- 
+  
 cd "$POL_System_TmpDir"
 POL_Download "http://propilkki.ddns.net/propilkki2/download/PP2_download.php?id=0"
- 
-# Move file to correct filename
-mv "PP2_download.php?id=0" "P2Installer_v1.1.exe" || POL_Debug_Fatal "$(eval_gettext 'Error rename the file!')"
- 
-POL_Wine_WaitBefore "$TITLE"
-POL_Wine "$POL_System_TmpDir/P2Installer_v1.1.exe" || POL_Debug_Fatal "$(eval_gettext 'Error file installing!')"
-POL_Wine_WaitExit "$TITLE"
   
+# Move file to correct filename
+mv "PP2_download.php?id=0" "P2Installer_v1.2.exe" || POL_Debug_Fatal "$(eval_gettext 'Error rename the file!')"
+  
+POL_Wine_WaitBefore "$TITLE"
+POL_Wine "$POL_System_TmpDir/P2Installer_v1.2.exe" || POL_Debug_Fatal "$(eval_gettext 'Error file installing!')"
+POL_Wine_WaitExit "$TITLE"
+   
 POL_Shortcut "ProPilkki2.exe" "$TITLE" || POL_Debug_Fatal "$(eval_gettext 'Error in shortcut!')"
-
-POL_SetupWindow_question "$(eval_gettext 'Do you want to install $TITLE $UPDATE_VERSION update?')" "$TITLE"
-if [ "$APP_ANSWER" = "TRUE" ]
-then
-
-	# Download update file.
-	cd "$POL_System_TmpDir"
-	POL_Download "http://propilkki.ddns.net/propilkki2/download_1.1.5/PP2_download.php?id=0"
-	POL_Wine_WaitBefore "$TITLE" 
-
-	# Move file to correct filename
-	mv "PP2_download.php?id=0" "P2Updater_v1.1.5.exe" || POL_Debug_Fatal "$(eval_gettext 'Error rename the file!')"
-
-	# Installing update
-	POL_Wine "$POL_System_TmpDir/P2Updater_v1.1.5.exe" || POL_Debug_Fatal "$(eval_gettext 'Error file installing!')"
-	POL_Wine_WaitExit "$TITLE"
-
-fi
-
+  
 POL_System_TmpDelete
 POL_SetupWindow_Close
- 
+  
 exit 0
