@@ -11,7 +11,7 @@
 [ "$PLAYONLINUX" = "" ] && exit 0
 source "$PLAYONLINUX/lib/sources"
  
-PREFIX="SubnauticaTest"
+PREFIX="Subnautica"
 WINEVERSION="3.0-rc6"
 TITLE="Subnautica"
 EDITOR="Unknown Worlds"
