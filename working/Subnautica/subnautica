@@ -38,34 +38,34 @@ POL_System_TmpCreate "$PREFIX"
 # Moving TMP dir
 cd "$POL_System_TmpDir"
   
-POL_SetupWindow_question "$(eval_gettext 'Do you want to open $TITLE install guide in your browser?')" "$TITLE"
+# POL_SetupWindow_question "$(eval_gettext 'Do you want to open $TITLE install guide in your browser?')" "$TITLE"
 
-	if [ "$APP_ANSWER" = "TRUE" ] 
-	then 
-	POL_Browser "https://steamcommunity.com/app/264710/discussions/0/1484358860940334488/"
-	fi
+	# if [ "$APP_ANSWER" = "TRUE" ] 
+	# then 
+	# POL_Browser "https://steamcommunity.com/app/264710/discussions/0/1484358860940334488/"
+	# fi
 
 # Registery fix
-POL_SetupWindow_message "$(eval_gettext 'Modifying register.')" "$TITLE"
+# POL_SetupWindow_message "$(eval_gettext 'Modifying register.')" "$TITLE"
 
-cat << EOF > Steam.reg
-REGEDIT4
+# cat << EOF > Steam.reg
+# REGEDIT4
  
-[HKEY_CURRENT_USER\Software\Wine\AppDefaults\Steam.exe]
-"Version"="winxp64"
-EOF
+# [HKEY_CURRENT_USER\Software\Wine\AppDefaults\Steam.exe]
+# "Version"="winxp64"
+# EOF
 
-POL_Wine regedit.exe steam.reg
+# POL_Wine regedit.exe steam.reg
 
-cat << EOF > steamwebhelper.reg
-REGEDIT4
+# cat << EOF > steamwebhelper.reg
+# REGEDIT4
  
-[HKEY_CURRENT_USER\Software\Wine\AppDefaults\steamwebhelper.exe]
-"Version"="winxp64"
-EOF
+# [HKEY_CURRENT_USER\Software\Wine\AppDefaults\steamwebhelper.exe]
+# "Version"="winxp64"
+# EOF
 
-POL_Wine regedit.exe steamwebhelper.reg
-POL_Wine_WaitExit "$TITLE"
+# POL_Wine regedit.exe steamwebhelper.reg
+# POL_Wine_WaitExit "$TITLE"
  
 # Installing mandatory dependencies
 POL_Call POL_Install_vcrun2013
