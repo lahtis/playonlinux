@@ -53,18 +53,12 @@ cd "$POL_System_TmpDir"
  
 # [HKEY_CURRENT_USER\Software\Wine\AppDefaults\Steam.exe]
 # "Version"="winxp64"
-# EOF
 
-# POL_Wine regedit.exe steam.reg
-
-# cat << EOF > steamwebhelper.reg
-# REGEDIT4
- 
 # [HKEY_CURRENT_USER\Software\Wine\AppDefaults\steamwebhelper.exe]
 # "Version"="winxp64"
 # EOF
 
-# POL_Wine regedit.exe steamwebhelper.reg
+# POL_Wine regedit.exe steam.reg
 # POL_Wine_WaitExit "$TITLE"
  
 # Installing mandatory dependencies
