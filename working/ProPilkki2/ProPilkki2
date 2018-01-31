@@ -23,8 +23,6 @@ WORKING_WINE_VERSION="3.0"
 EDITOR="Team Procyon"
 GAME_URL="http://www.kalassa.net"
 AUTHOR="lahtis"
-GAME_VMS="512"
- 
 CURRENT_VERSION="v.1.2"
   
 POL_GetSetupImages "http://files.playonlinux.com/resources/setups/$PREFIX/top.jpg" "http://files.playonlinux.com/resources/setups/$PREFIX/left.jpg" "$TITLE"
@@ -36,14 +34,11 @@ POL_SetupWindow_presentation "$TITLE" "$EDITOR" "$GAME_URL" "$AUTHOR" "$PREFIX"
 POL_Wine_SelectPrefix "$PREFIX"
 POL_System_SetArch "x86"
 POL_Wine_PrefixCreate "$WORKING_WINE_VERSION"
-  
 POL_System_TmpCreate "$PREFIX"
-  
-# Fix pulseaudio issue
-which pulseaudio && Set_OS "win8"
+Set_OS "win8"
   
 # Asking about memory size of graphic card
-POL_SetupWindow_VMS $GAME_VMS
+POL_SetupWindow_VMS "512"
   
 cd "$POL_System_TmpDir"
 POL_Download "http://propilkki.ddns.net/propilkki2/download/PP2_download.php?id=0"
@@ -59,5 +54,4 @@ POL_Shortcut "ProPilkki2.exe" "$TITLE" || POL_Debug_Fatal "$(eval_gettext 'Error
   
 POL_System_TmpDelete
 POL_SetupWindow_Close
-  
 exit 0
