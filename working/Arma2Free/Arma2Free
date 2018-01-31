@@ -33,7 +33,6 @@ POL_SetupWindow_presentation "$TITLE" "$EDITOR" "$GAME_URL" "$AUTHOR" "$PREFIX"
 POL_Wine_SelectPrefix "$PREFIX"
 POL_System_SetArch "x86"
 POL_Wine_PrefixCreate "$WORKING_WINE_VERSION"
-
 Set_OS "winxp"
 
 POL_SetupWindow_question "$(eval_gettext 'You want to open $TITLE download page in your browser?')" "$TITLE"
@@ -48,7 +47,7 @@ POL_Wine_WaitExit "$TITLE"
 POL_Wine_Direct3D "StrictDrawOrdering" "enabled"
 
 # Asking about memory size of graphic card
-POL_SetupWindow_VMS $GAME_VMS
+POL_SetupWindow_VMS "128"
 POL_Wine_reboot
  
 # Create Shortcuts
