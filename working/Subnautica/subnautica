@@ -22,6 +22,7 @@ AUTHOR="lahtis"
 # Initialization
 POL_GetSetupImages "http://files.playonlinux.com/resources/setups/$PREFIX/top.jpg" "http://files.playonlinux.com/resources/setups/$PREFIX/left.jpg" "$TITLE"
 POL_SetupWindow_Init
+POL_SetupWindow_SetID 3299
 POL_Debug_Init
       
 # Presentation
