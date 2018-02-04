@@ -81,7 +81,7 @@ POL_Shortcut "steam.exe" "$TITLE (Steam)" "$TITLE.png" "steam://rungameid/$STEAM
       
 POL_SetupWindow_message "$(eval_gettext 'When running game add -force-glcore or -force-opengl\nto your launch options by right clicking the game under Properties, Launch Options.\nNewer Nvidia Proprietary Drivers will work with -force-glcore45, which is OpenGL 4.5.')" "$TITLE"
 POL_SetupWindow_message "$(eval_gettext 'If the game crashes at startup, open a terminal and type:\necho 0|sudo tee /proc/sys/kernel/yama/ptrace_scope')"
- 
+
 POL_System_TmpDelete
 POL_SetupWindow_Close
 exit 0
