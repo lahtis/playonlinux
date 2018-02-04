@@ -1,7 +1,7 @@
 #!/usr/bin/env playonlinux-bash 
 # Date : (2017-01-24)
-# Last revision : (2017-01-26 19:57)
-# Distribution used to test : Ubuntu 16.04 
+# Last revision : (2017-02-04 03:07)
+# Distribution used to test : Ubuntu 16.04 LTS, NVIDIA geforce GTX 770, 
 # Author : lahtis
 # Licence : retail
 # PlayOnLinux: 4.2.12
@@ -13,7 +13,7 @@
 source "$PLAYONLINUX/lib/sources"
  
 PREFIX="Subnautica"
-WINEVERSION="3.0-rc6"
+WINEVERSION="3.1"
 TITLE="Subnautica"
 EDITOR="Unknown Worlds"
 GAME_URL="https://unknownworlds.com/subnautica/"
@@ -46,20 +46,23 @@ cd "$POL_System_TmpDir"
 	# fi
 
 # Registery fix
-# POL_SetupWindow_message "$(eval_gettext 'Modifying register.')" "$TITLE"
+POL_SetupWindow_message "$(eval_gettext 'Modifying register.')" "$TITLE"
 
-# cat << EOF > Steam.reg
-# REGEDIT4
+cat << EOF > fix.reg
+REGEDIT4
  
-# [HKEY_CURRENT_USER\Software\Wine\AppDefaults\Steam.exe]
-# "Version"="winxp64"
+[HKEY_CURRENT_USER\Software\Wine\AppDefaults\Steam.exe]
+"Version"="winxp64"
 
-# [HKEY_CURRENT_USER\Software\Wine\AppDefaults\steamwebhelper.exe]
-# "Version"="winxp64"
-# EOF
+[HKEY_CURRENT_USER\Software\Wine\AppDefaults\steamwebhelper.exe]
+"Version"="winxp64"
 
-# POL_Wine regedit.exe steam.reg
-# POL_Wine_WaitExit "$TITLE"
+[HKEY_CURRENT_USER\Software\Wine\X11 Driver]
+"UseTakeFocus"="N"
+EOF
+
+POL_Wine regedit.exe fix.reg
+POL_Wine_WaitExit "$TITLE"
  
 # Installing mandatory dependencies
 POL_Call POL_Install_vcrun2013
@@ -73,7 +76,7 @@ POL_Wine "steam.exe" steam://install/$STEAM_ID -no-cef-sandbox
 POL_Wine_WaitBefore "$TITLE"
 
 # Shortcut done before install for steam version
-POL_Shortcut "steam.exe" "$TITLE (Steam)" "$TITLE.png" "steam://rungameid/$STEAM_ID -force-glcore45"
+POL_Shortcut "steam.exe" "$TITLE (Steam)" "$TITLE.png" "steam://rungameid/$STEAM_ID"
       
 POL_SetupWindow_message "$(eval_gettext 'When running game add -force-glcore or -force-opengl\nto your launch options by right clicking the game under Properties, Launch Options.\nNewer Nvidia Proprietary Drivers will work with -force-glcore45, which is OpenGL 4.5.')" "$TITLE"
 POL_SetupWindow_message "$(eval_gettext 'If the game crashes at startup, open a terminal and type:\necho 0|sudo tee /proc/sys/kernel/yama/ptrace_scope')"
