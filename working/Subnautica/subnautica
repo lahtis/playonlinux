@@ -31,7 +31,9 @@ POL_Wine_SelectPrefix "$PREFIX"
 POL_System_SetArch "x64"
 POL_Wine_PrefixCreate "$WORKING_WINE_VERSION"
 POL_System_TmpCreate "$PREFIX"
-Set_Desktop "On" "1366" "768"
+
+Poll_Call POL_Function_SetResolution
+# Set_Desktop "On" "1366" "768"
  
 # Moving TMP dir
 cd "$POL_System_TmpDir"
