@@ -1,6 +1,6 @@
 #!/usr/bin/env playonlinux-bash
 # Date : (2013-02-18)
-# Last revision : (2018-02-09 17-02)
+# Last revision : (2018-02-09 21-39)
 # Distribution used to test : Ubuntu 12.10, Ubuntu 16.04
 # Author : lahtis
 # Licence : retail
@@ -48,7 +48,10 @@ REGEDIT4
 [HKEY_CURRENT_USER\Software\Wine\X11 Driver]
 "UseTakeFocus"="Y"
 EOF
- 
+
+POL_Wine regedit.exe fix.reg
+POL_Wine_WaitExit "$TITLE"
+
 # Installing mandatory dependencies
  
 POL_Call POL_Install_xinput # Fix game issue
