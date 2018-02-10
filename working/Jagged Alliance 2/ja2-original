@@ -1,6 +1,6 @@
 #!/usr/bin/env playonlinux-bash
 # Date : (2013-06-25 20:43)
-# Last revision : (2018-02-10 21-57)
+# Last revision : (2018-02-11 00-34)
 # Distribution used to test : Ubuntu Mate 16.04
 # Author : lahtis <lahtis@gmail.com>
 # Script licence : GPLv2
@@ -31,6 +31,7 @@ POL_SetupWindow_presentation "$TITLE" "$EDITOR" "$GAME_URL" "$AUTHOR" "$PREFIX"
 # Create Prefix
 POL_Wine_SelectPrefix "$PREFIX"
 POL_Wine_PrefixCreate "$WORKING_WINE_VERSION"
+POL_System_TmpCreate "$PREFIX"
 Set_OS win98
    
 # Asking about memory size of graphic card
@@ -45,9 +46,22 @@ POL_Wine_WaitBefore "$TITLE"
 POL_Wine start /unix "$CDROM/Install/SETUP.EXE" || POL_Debug_Fatal "$(eval_gettext 'Error while installing game.')"
 POL_Wine_WaitExit "$TITLE"
 
-   
+# Download patch JA2-1.07 Game working only offical 1.07 pacth.
+
+cd "$POL_System_TmpDir"
+
+POL_Download "http://kermi.pp.fi/JA_2/Patches/English/JA2-1.07.zip" 
+POL_Wine_WaitExit "$TITLE"
+
+# unzip file
+unzip "JA2-1.07.zip" || POL_Debug_Error "Unable to extract JA2-1.07.zip"
+
+POL_Wine_WaitBefore "$TITLE" 
+POL_Wine start /unix "JA2_1.07.EXE" || POL_Debug_Fatal "$(eval_gettext 'Error while paching game.')"
+POL_Wine_WaitExit "$TITLE"
+
 POL_Shortcut "ja2.exe" "$TITLE" "$TITLE.png"
-    
+   
 # Check Kernel ptrace
 if [ -e "/proc/sys/kernel/yama/ptrace_scope" ]; then
         PTRACE_CHECK=`cat /proc/sys/kernel/yama/ptrace_scope`
@@ -55,6 +69,7 @@ if [ -e "/proc/sys/kernel/yama/ptrace_scope" ]; then
                 POL_Debug_message "$(eval_gettext 'If the game crashes at startup, open a terminal and type:\necho 0|sudo tee /proc/sys/kernel/yama/ptrace_scope')" "$TITLE"
         fi
 fi
-  
+
+POL_System_TmpDelete
 POL_SetupWindow_Close
 exit 0
