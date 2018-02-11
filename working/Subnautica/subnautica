@@ -39,7 +39,9 @@ cd "$POL_System_TmpDir"
     
 # Installing mandatory dependencies
 POL_Call POL_Install_vcrun2013
-       
+ 
+POL_Wine_WaitBefore "$TITLE"
+
 # Registery fix
 cat << EOF > fix.reg
 REGEDIT4
@@ -49,13 +51,13 @@ REGEDIT4
 EOF
      
 POL_Wine regedit.exe fix.reg
-POL_Wine_WaitExit "$TITLE"
-    
+
 # Installing Steam
 POL_Call POL_Install_steam
 cd "$WINEPREFIX/drive_c/$PROGRAMFILES/Steam"
 POL_Wine "steam.exe" steam://install/264710
-POL_Wine_WaitBefore "$TITLE"
+POL_Wine_WaitExit "$TITLE"
+
      
 # Shortcut done before install for steam version
 POL_Shortcut "steam.exe" "$TITLE" "$TITLE.png" "steam://rungameid/264710"
