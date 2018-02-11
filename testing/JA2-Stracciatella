@@ -33,8 +33,7 @@ POL_Wine_SelectPrefix "$PREFIX"
 POL_Wine_PrefixCreate "$WORKING_WINE_VERSION"
 POL_System_TmpCreate "$PREFIX"
 
-# Fix pulseaudio issue
-which pulseaudio && Set_OS "winxp"
+Set_OS "winxp"
 
 # Asking for CDROM and checking if it's correct one
 POL_SetupWindow_message "$(eval_gettext 'Please insert the Install CD into your disk drive')" "$TITLE"
