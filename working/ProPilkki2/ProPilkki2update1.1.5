@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env playonlinux-bash
 # Date : (2017-01-19 16:27)
 # Last revision : (2017-02-11 17-38)
 # Wine version used : 2.0-rc5
@@ -7,7 +7,7 @@
 # Script licence : GPLv2
 # Pro Pilkki 2 update 1.1 to 1.1.5 version
 
-[ -z "$PLAYONLINUX" = "" ] && exit
+[ -z "$PLAYONLINUX" ] && exit
 source "$PLAYONLINUX/lib/sources"
 
 PREFIX="ProPilkki2"
@@ -25,6 +25,7 @@ UPDATE_VERSION="v.1.1.5"
 POL_GetSetupImages "http://files.playonlinux.com/resources/setups/$PREFIX/top.jpg" "http://files.playonlinux.com/resources/setups/$PREFIX/left.jpg" "$TITLE"
 
 POL_SetupWindow_Init
+POL_SetupWindow_SetID 3110
 POL_Debug_Init
  
 # Presentation
