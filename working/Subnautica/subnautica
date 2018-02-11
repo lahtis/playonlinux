@@ -1,71 +1,67 @@
 #!/usr/bin/env playonlinux-bash
 # Date : (2017-01-24)
-# Last revision : (2017-02-06 18:36)
-# Distribution used to test : Ubuntu 16.04 LTS, NVIDIA geforce GTX 770,
+# Last revision : (2017-02-07 23:00)
+# Distribution used to test : Ubuntu 16.04 LTS with NVIDIA geforce GTX 770 (lathis), Ubuntu 18.04 with Palit GeForce GTX 750 Ti (LinuxScripter)
 # Author : lahtis, LinuxScripter
 # Script licence : GPL3
 # Licence : retail
 # This installer pictures files found https://github.com/lahtis/playonlinux/blob/master/working/Subnautica/
- 
+     
 [ "$PLAYONLINUX" = "" ] && exit 0
 source "$PLAYONLINUX/lib/sources"
-  
+      
 TITLE="Subnautica"
 PREFIX="Subnautica"
 WORKING_WINE_VERSION="3.1"
 AUTHOR="lahtis, LinuxScripter"
 EDITOR="Unknown Worlds"
 GAME_URL="https://unknownworlds.com/subnautica/"
-  
+      
 # Initialization
 POL_GetSetupImages "http://files.playonlinux.com/resources/setups/$PREFIX/top.jpg" "http://files.playonlinux.com/resources/setups/$PREFIX/left.jpg" "$TITLE"
 POL_SetupWindow_Init
 POL_SetupWindow_SetID 3299
 POL_Debug_Init
-       
+           
 # Presentation
 POL_SetupWindow_presentation "$TITLE" "$EDITOR" "$GAME_URL" "$AUTHOR" "$PREFIX"
-  
+      
 # Create Prefix
 POL_Wine_SelectPrefix "$PREFIX"
 POL_System_SetArch "x64"
 POL_Wine_PrefixCreate "$WORKING_WINE_VERSION"
 POL_System_TmpCreate "$PREFIX"
 
-Poll_Call POL_Function_SetResolution
-# Set_Desktop "On" "1366" "768"
- 
+POL_Call POL_Function_SetResolution
+     
 # Moving TMP dir
 cd "$POL_System_TmpDir"
-
+    
 # Installing mandatory dependencies
 POL_Call POL_Install_vcrun2013
-   
+       
 # Registery fix
-POL_SetupWindow_message "$(eval_gettext 'Modifying register.')" "$TITLE"
- 
 cat << EOF > fix.reg
 REGEDIT4
-  
+      
 [HKEY_CURRENT_USER\Software\Wine\X11 Driver]
 "UseTakeFocus"="N"
 EOF
- 
+     
 POL_Wine regedit.exe fix.reg
 POL_Wine_WaitExit "$TITLE"
-
-POL_SetupWindow_message "$(eval_gettext 'When running game add -force-glcore or -force-opengl\nto your launch options by right clicking the game under Properties, Launch Options.\nNewer Nvidia Proprietary Drivers will work with -force-glcore45, which is OpenGL 4.5.')" "$TITLE"
-   
+    
 # Installing Steam
 POL_Call POL_Install_steam
 cd "$WINEPREFIX/drive_c/$PROGRAMFILES/Steam"
 POL_Wine "steam.exe" steam://install/264710
 POL_Wine_WaitBefore "$TITLE"
- 
+     
 # Shortcut done before install for steam version
 POL_Shortcut "steam.exe" "$TITLE" "$TITLE.png" "steam://rungameid/264710"
+POL_SetupWindow_message "$(eval_gettext 'When running game add -force-glcore or -force-opengl\nto your launch options by right clicking the game under Properties, Launch Options.\nNewer Nvidia Proprietary Drivers will work with -force-glcore45, which is OpenGL 4.5.')" "$TITLE"
 POL_SetupWindow_message "$(eval_gettext 'If the game crashes at startup, open a terminal and type:\necho 0|sudo tee /proc/sys/kernel/yama/ptrace_scope')"
- 
+     
 POL_System_TmpDelete
 POL_SetupWindow_Close
 exit 0
