@@ -1,0 +1,67 @@
+#!/usr/bin/env playonlinux-bash
+# Date : (2018-06-06 23:59)
+# Last revision : (2018-06-08 01:39)
+# Distribution used to test : Ubuntu 16.04 LTS with NVIDIA geforce GTX 770 (lathis),
+# Author : lahtis
+# Licence : GPLv3
+# PlayOnLinux: 4.2.9
+   
+   
+[ "$PLAYONLINUX" = "" ] && exit 0
+source "$PLAYONLINUX/lib/sources"
+   
+PREFIX="FuseMixamo"
+WINEVERSION="3.9"
+TITLE="Adobe Fuse - Mixamo"
+EDITOR="Adobe Systems Inc."
+GAME_URL="https://www.adobe.com/products/fuse.html"
+AUTHOR="lahtis"
+   
+# Initialization
+POL_GetSetupImages "http://files.playonlinux.com/resources/setups/$PREFIX/top.png" "http://files.playonlinux.com/resources/setups/$PREFIX/left.png" "$TITLE"
+POL_SetupWindow_Init
+POL_SetupWindow_SetID 3357
+  
+# Presentation
+POL_SetupWindow_presentation "$TITLE" "$EDITOR" "$GAME_URL" "$AUTHOR" "$PREFIX"
+          
+# Create Prefix
+POL_Wine_SelectPrefix "$PREFIX"
+POL_System_SetArch "x64"
+POL_Wine_PrefixCreate "$WINEVERSION"
+POL_System_TmpCreate "$PREFIX"
+  
+# Moving TMP dir
+cd "$POL_System_TmpDir"
+  
+POL_Call POL_Install_corefonts
+POL_Call POL_Install_tahoma2
+POL_Call POL_Install_FontsSmoothRGB
+  
+# Registery fix for the game crashing after quiting
+cat << EOF > fix.reg
+REGEDIT4
+         
+[HKEY_CURRENT_USER\Software\Wine\AppDefaults\Steam.exe]
+"Version"="winxp64"
+    
+[HKEY_CURRENT_USER\Software\Wine\AppDefaults\steamwebhelper.exe]
+"Version"="winxp64"
+   
+EOF
+         
+POL_Wine regedit.exe fix.reg
+   
+# Installing Steam
+POL_Call POL_Install_steam
+cd "$WINEPREFIX/drive_c/$PROGRAMFILES/Steam"
+POL_Wine "steam.exe" steam://install/257400
+POL_Wine_WaitBefore "$TITLE"
+         
+# Shortcut done before install for steam version
+POL_Shortcut "steam.exe" "$TITLE" "$TITLE.png" "steam://rungameid/257400"
+POL_SetupWindow_message "$(eval_gettext 'If the program crashes at startup, open a terminal and type:\necho 0|sudo tee /proc/sys/kernel/yama/ptrace_scope')"
+         
+POL_System_TmpDelete
+POL_SetupWindow_Close
+exit 0
