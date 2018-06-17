@@ -1,0 +1,61 @@
+#!/usr/bin/env playonlinux-bash
+# Date : (2018-06-17 20:40)
+# Last revision : (2018-06-17 20:40)
+# Distribution used to test : Ubuntu 16.04 LTS with NVIDIA geforce GTX 770 (lathis),
+# Author : lahtis
+# Licence : GPLv3
+# PlayOnLinux: 4.2.9
+   
+   
+[ "$PLAYONLINUX" = "" ] && exit 0
+source "$PLAYONLINUX/lib/sources"
+   
+PREFIX="L3DT"
+WORKING_WINE_VERSION="3.1"
+TITLE="L3DT"
+EDITOR="Bundysoft"
+GAME_URL="http://www.bundysoft.com/L3DT/"
+AUTHOR="lahtis"
+   
+# Initialization
+POL_GetSetupImages "http://files.playonlinux.com/resources/setups/$PREFIX/top.png" "http://files.playonlinux.com/resources/setups/$PREFIX/left.png" "$TITLE"
+POL_SetupWindow_Init
+
+  
+# Presentation
+POL_SetupWindow_presentation "$TITLE" "$EDITOR" "$GAME_URL" "$AUTHOR" "$PREFIX"
+          
+# Create Prefix
+POL_Wine_SelectPrefix "$PREFIX"
+POL_System_SetArch "x86"
+POL_Wine_PrefixCreate "$WORKING_WINE_VERSION"
+POL_System_TmpCreate "$PREFIX"
+  
+# Moving TMP dir
+cd "$POL_System_TmpDir"
+
+Set_OS "win7"  
+
+  
+# Do you have downloaded the exe file? if no open browser.
+POL_SetupWindow_question "$(eval_gettext 'Do you have downloaded the zip file?')" "$TITLE"
+if [ "$APP_ANSWER" = "FALSE" ]
+then
+	POL_Browser "http://www.bundysoft.com/L3DT/downloads/"
+fi        
+
+cd "$HOME"   
+
+# Installing
+POL_SetupWindow_browse "$(eval_gettext 'Please select the downloaded exe file.')" "$TITLE"
+POL_Wine "$APP_ANSWER"
+POL_Wine_WaitExit "$TITLE"
+         
+# Shortcut done before install for steam version
+POL_Shortcut "L3DT.exe" "$TITLE"
+
+POL_SetupWindow_message "$(eval_gettext 'If the program crashes at startup, open a terminal and type:\necho 0|sudo tee /proc/sys/kernel/yama/ptrace_scope')"
+         
+POL_System_TmpDelete
+POL_SetupWindow_Close
+exit 0
