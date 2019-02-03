@@ -11,7 +11,7 @@ source "$PLAYONLINUX/lib/sources"
  
 TITLE="ifolor Designer"
 PREFIX="ifolorDesigner"
-WORKING_WINE_VERSION="1.7.47"
+WORKING_WINE_VERSION="3.20"
 EDITOR=""
 GAME_URL="http://www.ifolor.fi/en/ifolor_designer"
 AUTHOR="lahtis"
@@ -23,15 +23,12 @@ POL_Debug_Init
 POL_SetupWindow_presentation "$TITLE" "$EDITOR" "$GAME_URL" "$AUTHOR" "$PREFIX"
  
 POL_Wine_SelectPrefix "$PREFIX"
-POL_System_SetArch "x86"
+POL_System_SetArch "x64"
 POL_Wine_PrefixCreate "$WORKING_WINE_VERSION"
 
 # Dependencies, overrides, and Windows version settings
 POLL_Call POL_Install_dotnet45
 POLL_Call POL_Install_gdiplus 
-
-# Fix pulseaudio issue
-which pulseaudio && Set_OS "winxp"
 
 # Do you have downloaded the program file?
 # Choose XP file.
