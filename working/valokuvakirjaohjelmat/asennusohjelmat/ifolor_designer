@@ -11,7 +11,7 @@ source "$PLAYONLINUX/lib/sources"
  
 TITLE="ifolor Designer"
 PREFIX="ifolorDesigner"
-WORKING_WINE_VERSION="3.20"
+WORKING_WINE_VERSION="4.0-rc7-staging"
 EDITOR=""
 GAME_URL="http://www.ifolor.fi/en/ifolor_designer"
 AUTHOR="lahtis"
@@ -44,7 +44,7 @@ POL_SetupWindow_browse "$(eval_gettext 'Please select the downloaded program fil
 POL_Wine "$APP_ANSWER"
 POL_Wine_WaitExit "$TITLE"
 
-POL_Shortcut "Ifolor.ClientApplications.Starter.exe" "$TITLE"
+POL_Shortcut "Ifolor.DesignCenter.Starter.exe" "$TITLE"
 
 POL_SetupWindow_Close
  
