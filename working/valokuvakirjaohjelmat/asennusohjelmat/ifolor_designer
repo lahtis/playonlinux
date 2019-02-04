@@ -1,10 +1,10 @@
 #!/bin/bash
 # Date : (2015-28-12 21:55)
-# Last revision : (2015-29-12 01:05)
-# Distribution used to test : Ubuntu 14.04
+# Last revision : (2019-04-02 02:46)
+# Distribution used to test : Ubuntu 16.04
 # Author : lahtis
 # Licence : GPLv3
-# PlayOnLinux: 4.2.8
+# PlayOnLinux: 4.3.4
 
 [ -z "$PLAYONLINUX" ] && exit 0 
 source "$PLAYONLINUX/lib/sources"
@@ -23,12 +23,13 @@ POL_Debug_Init
 POL_SetupWindow_presentation "$TITLE" "$EDITOR" "$GAME_URL" "$AUTHOR" "$PREFIX"
  
 POL_Wine_SelectPrefix "$PREFIX"
-POL_System_SetArch "x64"
+POL_System_SetArch "x86"
 POL_Wine_PrefixCreate "$WORKING_WINE_VERSION"
+
+POL_SetupWindow_message "$(eval_gettext 'If the program crashes at startup, open a terminal and type:\necho 0|sudo tee /proc/sys/kernel/yama/ptrace_scope')"
 
 # Dependencies, overrides, and Windows version settings
 POLL_Call POL_Install_dotnet45
-POLL_Call POL_Install_gdiplus 
 
 # Do you have downloaded the program file?
 # Choose XP file.
@@ -47,5 +48,7 @@ POL_Wine_WaitExit "$TITLE"
 POL_Shortcut "Ifolor.DesignCenter.Starter.exe" "$TITLE"
 
 POL_SetupWindow_Close
+ 
+exit 0
  
 exit 0
