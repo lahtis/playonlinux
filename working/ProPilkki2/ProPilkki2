@@ -1,53 +1,59 @@
-#!/usr/bin/env playonlinux-bash
+#!/bin/bash
 # Date : (2013-02-26 ??-??)
-# Last revision : (2018-02-09 17-34)
-# Distribution used to test : Ubuntu 16.04 lts, 64-bit
+# Last revision : (2019-03-08 15-48)
+# Distribution used to test : Ubuntu 18.04 LTS
 # Author : lahtis
 # Licence : GPLv3
-# Installer for Pro pilkki 2 v1.2
-# PlayOnLinux: 4.1.9, 4.2.1, 4.2.9 4.2.10, 4.2.12
-# Latest found https://github.com/lahtis/playonlinux/blob/master/working/ProPilkki2
-   
+# Installer for Pro pilkki 2 v1.4.2
+# PlayOnLinux: 4.1.9, 4.2.1, 4.2.9
+ 
 # CHANGELOG
 # [SuperPlumus] (2013-07-24 09-37)
 #   Update gettext messages
 #   Clean code
 #   Fix $PLAYONLINUX check presence
-   
-[ "$PLAYONLINUX" = "" ] && exit 0
+ 
+[ -z "$PLAYONLINUX" ] && exit 0
 source "$PLAYONLINUX/lib/sources"
-   
+ 
 TITLE="Pro Pilkki 2"
 PREFIX="ProPilkki2"
 WORKING_WINE_VERSION="3.0"
 EDITOR="Team Procyon"
-GAME_URL="http://www.kalassa.net"
+GAME_URL="http://www.kalassa.net/propilkki2/index.php?eng=1"
 AUTHOR="lahtis"
-CURRENT_VERSION="v.1.2"
-   
+
+  
 POL_GetSetupImages "http://files.playonlinux.com/resources/setups/$PREFIX/top.jpg" "http://files.playonlinux.com/resources/setups/$PREFIX/left.jpg" "$TITLE"
-POL_SetupWindow_Init
+POL_SetupWindow_Init 
+POL_SetupWindow_SetID 1595
 POL_Debug_Init
-   
+ 
 POL_SetupWindow_presentation "$TITLE" "$EDITOR" "$GAME_URL" "$AUTHOR" "$PREFIX"
-   
+ 
 POL_Wine_SelectPrefix "$PREFIX"
 POL_System_SetArch "x86"
 POL_Wine_PrefixCreate "$WORKING_WINE_VERSION"
+ 
 POL_System_TmpCreate "$PREFIX"
+ 
 Set_OS "win8"
-   
-# Asking about memory size of graphic card
-POL_SetupWindow_VMS "512"
-   
+ 
 cd "$POL_System_TmpDir"
 POL_Download "http://propilkki.ddns.net/propilkki2/download/PP2_download.php?id=0"
-   
-# Move file to correct filename
-mv "PP2_download.php?id=0" "P2Installer_v1.2.exe" || POL_Debug_Fatal "$(eval_gettext 'Error rename the file!')"
-   
+
+mv "PP2_download.php?id=0" "P2Installer_v1.4.2.exe" || POL_Debug_Fatal "$(eval_gettext 'Error rename the file!')"
+ 
 POL_Wine_WaitBefore "$TITLE"
-POL_Wine "$POL_System_TmpDir/P2Installer_v1.2.exe" || POL_Debug_Fatal "$(eval_gettext 'Error file installing!')"
+POL_Wine "$POL_System_TmpDir/P2Installer_v1.4.2.exe"
+POL_Wine_WaitExit "$TITLE"
+ 
+POL_Shortcut 'ProPilkki2.exe' "$TITLE"
+
+POL_System_TmpDelete 
+POL_SetupWindow_Close
+ 
+exit 0
 POL_Wine_WaitExit "$TITLE"
     
 POL_Shortcut "ProPilkki2.exe" "$TITLE" || POL_Debug_Fatal "$(eval_gettext 'Error in shortcut!')"
